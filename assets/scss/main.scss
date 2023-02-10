@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+$active-control-color: #000;
+
+:root {
+  --vp-c-brand-active: #{$active-control-color};
+}
