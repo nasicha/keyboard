@@ -16,7 +16,7 @@
         >{{ char.character }}</li>
 			</ul>
 		</li>
-	</ul>x
+	</ul>
 </template>
 
 <script lang="ts" setup>
