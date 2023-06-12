@@ -1,7 +1,3 @@
-<script setup lang="ts">
-defineProps<{ label: string }>();
-</script>
-
 <template>
   <div class="flex flex-col">
     <span class="font-medium font-mono">
@@ -13,3 +9,6 @@ defineProps<{ label: string }>();
     >
   </div>
 </template>
+<script setup lang="ts">
+defineProps<{ label: string }>();
+</script>
