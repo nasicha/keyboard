@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-screen-lg mx-auto overflow-hidden grid-cols-[2fr,1fr]">
-      <div class="relative w-full">
-    <CharacterGroups :gamepad="gamepad" />
+    <div class="relative flex flex-wrap w-full">
+      <CharacterGroups :gamepad="gamepad" />
     </div>
     
     <GamepadInfo :gamepad="gamepad" />
@@ -32,6 +32,5 @@ import CharacterGroups from "@/components/Molecules/CharacterGroups.vue";
 import Controller from "@/components/Atoms/Controller.vue";
 
 defineProps<{ gamepad: Gamepad; showGamepad?: Boolean }>();
-
 
 </script>

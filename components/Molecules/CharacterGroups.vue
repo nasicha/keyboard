@@ -2,7 +2,7 @@
   <div
     v-for="group in characterGroups"
     :key="group.key"
-    class="rounded-xl border p-2"
+    class="rounded-full w-[150px] h-[150px] border p-2"
     :class="Number(group.key) === charGroup ? 'bg-slate-500 text-white' : ''"
   >
     <CharacterGroup :group="group" />
@@ -36,4 +36,3 @@ watch(
 
 watch(leftStick, characterGroupPosition); // Watch myVariable and execute myComposable when it changes
 </script>
-```
