@@ -37,7 +37,7 @@ const props = defineProps<{ group: characterGroup }>();
       height: $item-size;
     
       $angle: (calc(360 / $item-count));
-      $rot: 0;
+      $rot: -90;
 
       @for $i from 1 through $item-count {
         &:nth-of-type(#{$i}) {
