@@ -377,26 +377,14 @@
 <script setup lang="ts">
 import { computed, toRefs } from "vue-demi";
 import { mapGamepadToXbox360Controller } from "@vueuse/core";
+
 const props = defineProps<{ gamepad: Gamepad }>();
 const { gamepad } = toRefs(props);
 const controller = mapGamepadToXbox360Controller(gamepad);
-const threshold = 0.075;
-const isLeftStickActive = computed(() => {
-  if (controller.value)
-    return (
-      Math.abs(controller.value?.stick.left.horizontal) > threshold ||
-      Math.abs(controller.value?.stick.left.vertical) > threshold
-    );
-  return false;
-});
-const isRightStickActive = computed(() => {
-  if (controller.value)
-    return (
-      Math.abs(controller.value?.stick.right.horizontal) > threshold ||
-      Math.abs(controller.value?.stick.right.vertical) > threshold
-    );
-  return false;
-});
+
+const isLeftStickActive = computed(() => useIsStickActive(controller, 'left'));
+
+const isRightStickActive = computed(() => useIsStickActive(controller, 'right'));
 </script>
 
 <style>

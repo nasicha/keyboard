@@ -1,5 +1,4 @@
 import characterData from './characterData';
-import { character } from '../types/character';
 import { characterGroup } from './../types/characterGroup';
 
 export const useCharacterData = () => {

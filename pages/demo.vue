@@ -35,6 +35,7 @@
         v-for="gamepad in gamepads"
         :key="gamepad.id"
         :gamepad="gamepad"
+        :show-gamepad="true"
       />
     </div>
   </div>
@@ -42,6 +43,6 @@
 
 <script setup lang="ts">
 import { useGamepad } from "@vueuse/core";
-import Gamepad from "@/components/Gamepad.vue";
+import Gamepad from "@/components/Organisms/Gamepad.vue";
 const { isSupported, gamepads } = useGamepad();
 </script>

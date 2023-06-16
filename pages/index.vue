@@ -2,13 +2,10 @@
   <div>
     <div
       v-if="!isSupported"
-      flex="~ row"
-      place="items-center content-center"
-      items="center"
-      space="x-4"
+      class="flex flex-row items-center content-center px-4"
     >
-      <i i-carbon-error text="5xl" opacity="50" />
-      <div flex="~ col">
+      <i i-carbon-error opacity="50"  />
+      <div class="flex flex-col px-4">
         <span text="2xl">Gamepad is not supported on this device.</span>
         <span opacity="70"
           >It seems your device does not support the Gamepad API. Check
@@ -42,6 +39,6 @@
 
 <script setup lang="ts">
 import { useGamepad } from "@vueuse/core";
-import Gamepad from "@/components/Gamepad.vue";
+import Gamepad from "@/components/Organisms/Gamepad.vue";
 const { isSupported, gamepads } = useGamepad();
 </script>
