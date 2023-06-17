@@ -4,7 +4,7 @@
       v-if="!isSupported"
       class="flex flex-row items-center content-center px-4"
     >
-      <i i-carbon-error opacity="50"  />
+      <span class="text-5xl opacity-50">🚫</span>
       <div class="flex flex-col px-4">
         <span text="2xl">Gamepad is not supported on this device.</span>
         <span opacity="70"
@@ -18,7 +18,7 @@
       v-else-if="gamepads.length === 0"
       class="flex flex-row items-center content-center space-x-4"
     >
-      <span class="text-5xl opacity-50">🎮</span>
+      <span class="text-5xl opacity-50">🚫</span>
       <div class="flex flex-col">
         <span class="text-2xl">No Gamepad Detected</span>
         <span class="opacity-80"
@@ -28,7 +28,7 @@
       </div>
     </div>
     <div v-else class="space-y-4">
-      <Gamepad
+      <Keyboard
         v-for="gamepad in gamepads"
         :key="gamepad.id"
         :gamepad="gamepad"
@@ -39,6 +39,6 @@
 
 <script setup lang="ts">
 import { useGamepad } from "@vueuse/core";
-import Gamepad from "@/components/Organisms/Gamepad.vue";
+import Keyboard from "@/components/Organisms/Keyboard.vue";
 const { isSupported, gamepads } = useGamepad();
 </script>

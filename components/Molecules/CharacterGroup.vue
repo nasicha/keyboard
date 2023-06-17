@@ -1,5 +1,5 @@
 <template>
-  <div class="circle-container">
+  <div class="charactergroup-circle">
     <div
       v-for="character in props.group.characters"
       :key="character.position"
@@ -19,50 +19,14 @@ const props = defineProps<{ group: characterGroup }>();
 
 </script>
 <style lang="scss" scoped>
-  @mixin on-circle($item-count, $circle-size, $item-size) {  
-    position: relative;
-    width:  $circle-size;
-    height: $circle-size;
-    border-radius: 50%;
-    padding: 0; 
-    list-style: none;
-    
-    > * {
-      display: block;
-      position: absolute;
-      top:  69%; 
-      left: 69%;
-      margin: -(calc($item-size / 2));
-      width:  $item-size;
-      height: $item-size;
-    
-      $angle: (calc(360 / $item-count));
-      $rot: -90;
+@import "@/assets/scss/utils.scss";
+  
+  .charactergroup-circle {
+    @include on-inner-circle($item-count: 4, $circle-size: 5.75em, $item-size: 2.75em); 
 
-      @for $i from 1 through $item-count {
-        &:nth-of-type(#{$i}) {
-          transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
-        }
-
-        $rot: $rot + $angle;
-      }
-    }
-  }
-
-  .circle-container {
-    @include on-circle($item-count: 4, $circle-size: 6em, $item-size: 3em); 
-
-    img { 
-      display: block; 
-      max-width: 20%; 
-      border-radius: 50%;
-      filter: grayscale(100%);
-      border: solid 5px tomato;
-      transition: .15s;
-      
-      &:hover {
-        filter: grayscale(0);
-      }
+    > div {
+      top:  72%; 
+      left: 72%;
     }
   }
 </style>

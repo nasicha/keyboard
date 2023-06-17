@@ -2,15 +2,12 @@
   <div>
     <div
       v-if="!isSupported"
-      flex="~ row"
-      place="items-center content-center"
-      items="center"
-      space="x-4"
+      class="flex flex-row items-center content-center px-4"
     >
-      <i i-carbon-error text="5xl" opacity="50" />
-      <div flex="~ col">
-        <span text="2xl">Gamepad is not supported on this device.</span>
-        <span opacity="70"
+      <i i-carbon-error class="text-5xl opacity-50" />
+      <div class="flex flex-col">
+        <span class="text-2xl">Gamepad is not supported on this device.</span>
+        <span class="opacity-70"
           >It seems your device does not support the Gamepad API. Check
           <a href="https://caniuse.com/gamepad">here</a> for a list supported
           devices.</span
