@@ -39,6 +39,6 @@
 
 <script setup lang="ts">
 import { useGamepad } from "@vueuse/core";
-import Keyboard from "@/components/Organisms/Keyboard.vue";
+import Keyboard from "~/components/Organisms/Keyboard.vue";
 const { isSupported, gamepads } = useGamepad();
 </script>

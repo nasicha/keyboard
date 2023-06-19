@@ -1,39 +1,75 @@
 <template>
   <div class="charactergroups-circle">
     <div
-      v-for="group in characterGroups"
+      v-for="group in charGroups"
       :key="group.key"
       class="charactergroup transition-all duration-100 ease-in-out"
-      :class="Number(group.key) === charGroup ? 'bg-slate-500 text-white' : ''"
+      :class="Number(group.key) === charGroup ? 'bg-black text-white' : 'bg-white text-black'"
     >
-      <CharacterGroup :group="group" />
+      <CharacterGroup :key="update" :group="group" />
     </div>
-  </div>
+  </div>    
+  <button 
+    @click="toggleCharacterData" 
+    v-html="useAlphabetic ? 'Use QWERTY-like' : 'Use Alphabetic'"
+    class="ml-auto hover:text-white hover:bg-black"
+  />
 </template>
 
 <script lang="ts" setup>
 import CharacterGroup from "@/components/Molecules/CharacterGroup.vue";
+import { mapGamepadToXbox360Controller } from "@vueuse/core";
+
 const props = defineProps<{ gamepad: Gamepad }>();
 
-const { characterGroups } = useCharacterData();
 
-const leftStick = reactive({ x: 0, y: 0 }); // Variable you want to watch
+// update character data
+const update = ref(0);
+
+const useAlphabetic = ref(false)
+const { characterGroups } = useCharacterData(useAlphabetic.value);
+const charGroups = ref(characterGroups);
+
+
+// left stick logic
 const charGroup = ref(0);
 
 // Composable function to be executed whenever charGroup changes
 const characterGroupPosition = () => {
-  charGroup.value = useLeftStick(leftStick.x, leftStick.y);
+  charGroup.value = useLeftStick(props.gamepad.axes[0], props.gamepad.axes[1]);
 };
 
-watch(
-  () => props.gamepad.axes,
-  (leftAxes) => {
-    leftStick.x = leftAxes[0];
-    leftStick.y = leftAxes[1];
-  }
-);
+watch(() => props.gamepad.axes, characterGroupPosition);
 
-watch(leftStick, characterGroupPosition); // Watch myVariable and execute myComposable when it changes
+// right stick logic
+// TODO!!!!!
+
+// shift character logic
+
+// controller
+const { gamepad } = toRefs(props);
+const controller = mapGamepadToXbox360Controller(gamepad);
+
+const useShift = ref(false)
+
+const shiftCharacterData = () => {
+  useShift.value = !useShift.value;
+  charGroups.value = useCharacterData(useShift.value, useAlphabetic.value).characterGroups;
+  update.value++;
+}
+
+watch(() => controller.value?.stick.left.button.pressed, (pressed) => {
+  if (pressed) {
+    shiftCharacterData();
+  }
+});
+
+// toggle character data
+const toggleCharacterData = () => {
+  useAlphabetic.value = !useAlphabetic.value;
+  charGroups.value = useCharacterData(useShift.value, useAlphabetic.value).characterGroups;
+  update.value++;
+}
 </script>
 
 <style lang="scss" scoped>
@@ -52,6 +88,7 @@ watch(leftStick, characterGroupPosition); // Watch myVariable and execute myComp
   padding: 0.5rem;
   border-radius: 100%;
   border-width: 1px;
+  
 
   &:first-of-type {
     top: 50%;

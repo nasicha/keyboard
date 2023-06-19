@@ -1,14 +1,21 @@
 import characterData from './characterData';
-import { characterGroup } from './../types/characterGroup';
 
-export const useCharacterData = () => {
+export const useCharacterData = (shiftCharacters?: boolean, byAlphabet?: boolean) => {
+    let selectedData;
+
+    if (byAlphabet) {
+        selectedData = characterData.characterGroupsAlphabetical;
+    } else {
+        selectedData = characterData.characterGroupsQWERTY;
+    }
+
     return {
-        characterGroups: characterData.characterGroups.map((groups) => {
+        characterGroups: selectedData.map((groups) => {
             return {
                 key: groups.key,
                 characters: groups.characters.map((char) => {
                     return {
-                        character: char.value,
+                        character: shiftCharacters ? char.valueShift : char.value,
                         position: char.key,
                     }
                 })

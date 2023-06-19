@@ -20,6 +20,5 @@
 </template>
 
 <script lang="ts" setup>
-
 const { characterGroups } = useCharacterData();
 </script>

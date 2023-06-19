@@ -1,4 +1,4 @@
-export const useIsStickActive = (controller: any, stick: String) => {
+export const useIsStickActive = (controller: any, stick: string) => {
 
   if(!controller.value) {
     return
