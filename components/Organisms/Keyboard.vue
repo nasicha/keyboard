@@ -3,7 +3,7 @@
     <textarea 
       v-model="input" 
       ref="inputField"
-      class="w-full h-20 border rounded-md border-emerald-500 resize-none"  
+      class="w-full h-20 border rounded-md border-emerald-500 resize-none mb-4"  
       autofocus
     />
 

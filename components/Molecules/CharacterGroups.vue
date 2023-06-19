@@ -4,9 +4,9 @@
       v-for="group in charGroups"
       :key="group.key"
       class="charactergroup transition-all duration-100 ease-in-out"
-      :class="Number(group.key) === charGroup ? 'bg-black text-white' : 'bg-white text-black'"
+      :class="Number(group.key) === charGroup ? 'active' : ''"
     >
-      <CharacterGroup :key="update" :group="group" />
+      <CharacterGroup :key="update" :group="group" :active="Number(group.key) === charGroup"/>
     </div>
   </div>    
   <button 
@@ -22,7 +22,6 @@ import { mapGamepadToXbox360Controller } from "@vueuse/core";
 
 const props = defineProps<{ gamepad: Gamepad }>();
 
-
 // update character data
 const update = ref(0);
 
@@ -30,26 +29,31 @@ const useAlphabetic = ref(false)
 const { characterGroups } = useCharacterData(useAlphabetic.value);
 const charGroups = ref(characterGroups);
 
+// controller
+const { gamepad } = toRefs(props);
+const controller = mapGamepadToXbox360Controller(gamepad);
 
 // left stick logic
 const charGroup = ref(0);
 
 // Composable function to be executed whenever charGroup changes
-const characterGroupPosition = () => {
-  charGroup.value = useLeftStick(props.gamepad.axes[0], props.gamepad.axes[1]);
+const characterGroupPosition = (x: number, y: number) => {
+  charGroup.value = useLeftStick(x, y);
 };
 
-watch(() => props.gamepad.axes, characterGroupPosition);
+watch(() => controller.value?.stick.left, () => {
+  let x = controller.value?.stick.left.horizontal ? controller.value?.stick.left.horizontal : 0;
+  let y = controller.value?.stick.left.vertical ? controller.value?.stick.left.vertical : 0;
+  characterGroupPosition(x, y);
+});
 
 // right stick logic
 // TODO!!!!!
 
 // shift character logic
 
-// controller
-const { gamepad } = toRefs(props);
-const controller = mapGamepadToXbox360Controller(gamepad);
 
+// shift character data
 const useShift = ref(false)
 
 const shiftCharacterData = () => {
@@ -87,8 +91,12 @@ const toggleCharacterData = () => {
   height: 150px;
   padding: 0.5rem;
   border-radius: 100%;
-  border-width: 1px;
+  border: 2px solid black;
   
+  &.active {
+    background: black;
+    color: white;
+  }
 
   &:first-of-type {
     top: 50%;

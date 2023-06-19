@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-8">
     <div
       v-if="!isSupported"
       class="flex flex-row items-center content-center px-4"
@@ -16,7 +16,7 @@
     </div>
     <div
       v-else-if="gamepads.length === 0"
-      class="flex flex-row items-center content-center space-x-4"
+      class="w-full flex flex-row items-center"
     >
       <span class="text-5xl opacity-50">🚫</span>
       <div class="flex flex-col">
@@ -27,7 +27,7 @@
         >
       </div>
     </div>
-    <div v-else class="space-y-4">
+    <div v-else>
       <Keyboard
         v-for="gamepad in gamepads"
         :key="gamepad.id"
