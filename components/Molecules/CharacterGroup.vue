@@ -3,8 +3,8 @@
     <div
       v-for="character in props.group.characters"
       :key="character.position"
-      :class="props.active ? 'border-white' : ' border-black'"
-      class="border-2 rounded-full text-center leading-[3.5rem]"
+      :class="props.active ? 'active' : ''"
+      class="rounded-full text-center leading-[3.5rem] "
     >
       <Character :character="character.character" />
     </div>
@@ -21,6 +21,7 @@ const props = defineProps<{ group: characterGroup, active?: Boolean }>();
 
 <style lang="scss" scoped>
 @import "@/assets/scss/utils.scss";
+@import "@/assets/scss/baseColors.scss";
   
   .charactergroup-circle {
     @include on-inner-circle($item-count: 4, $circle-size: 5.5em, $item-size: 3.5em); 
@@ -28,6 +29,16 @@ const props = defineProps<{ group: characterGroup, active?: Boolean }>();
     > div {
       top:  74%; 
       left: 74%;
+      color: $base-color;
+      border: 2px solid $base-color;
+      background-color: $secondary-color;
+
+
+      &.active {
+        background: $base-color;
+        border: 2px solid $secondary-color;
+        color: $secondary-color;
+      }
     }
   }
 </style>

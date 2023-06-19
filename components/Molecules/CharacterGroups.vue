@@ -12,7 +12,7 @@
   <button 
     @click="toggleCharacterData" 
     v-html="useAlphabetic ? 'Use QWERTY-like' : 'Use Alphabetic'"
-    class="ml-auto hover:text-white hover:bg-black"
+    class="ml-auto"
   />
 </template>
 
@@ -77,12 +77,15 @@ const toggleCharacterData = () => {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/baseColors.scss";
 .charactergroups-circle {
   position: relative;
   max-width: 100%;
   width: 500px;
   height: 500px;
   padding: 175px;
+  border-radius: 100%;
+  background: $background-color;
 }
 
 .charactergroup {
@@ -91,11 +94,14 @@ const toggleCharacterData = () => {
   height: 150px;
   padding: 0.5rem;
   border-radius: 100%;
-  border: 2px solid black;
+  border: 2px solid $base-color;
+  color: $base-color;
+  background-color: $secondary-color;
   
   &.active {
-    background: black;
-    color: white;
+    border: 2px solid $base-color;
+    background: $base-color;
+    color: $secondary-color;
   }
 
   &:first-of-type {
