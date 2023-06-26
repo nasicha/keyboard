@@ -6,8 +6,8 @@
     >
       <span class="text-5xl opacity-50">🚫</span>
       <div class="flex flex-col px-4">
-        <span text="2xl">Gamepad is not supported on this device.</span>
-        <span opacity="70"
+        <span class="text-2xl">Gamepad is not supported on this device.</span>
+        <span class="opacity-80"
           >It seems your device does not support the Gamepad API. Check
           <a href="https://caniuse.com/gamepad">here</a> for a list supported
           devices.</span
@@ -41,4 +41,5 @@
 import { useGamepad } from "@vueuse/core";
 import Keyboard from "~/components/Organisms/Keyboard.vue";
 const { isSupported, gamepads } = useGamepad();
+
 </script>

@@ -128,5 +128,135 @@ export default {
                 { key: 4, value: 'z', valueShift: 'Z' },
             ]
         },
+    ],
+    characterGroupsSymbols: [
+        {
+            key: '0',
+            characters: [
+                { key: 1, value: '!', valueShift: '!' },
+                { key: 2, value: '?', valueShift: '?' },
+                { key: 3, value: '\xa0', valueShift: '\xa0' },
+                { key: 4, value: '.', valueShift: ':' },
+            ]
+        },
+        {
+            key: '1',
+            characters: [
+                { key: 1, value: '4', valueShift: '' },
+                { key: 2, value: '5', valueShift: '' },
+                { key: 3, value: '6', valueShift: '' },
+                { key: 4, value: '7', valueShift: ''},
+            ]
+        },
+        {
+        key: '2',
+        characters: [
+            { key: 1, value: '8', valueShift: '' },
+            { key: 2, value: '9', valueShift: '' },
+            { key: 3, value: '\'', valueShift: '"' },
+            { key: 4, value: ',', valueShift: ';' },
+        ]
+        },
+        {
+            key: '3',
+            characters: [
+                { key: 1, value: '+', valueShift: '' },
+                { key: 2, value: '-', valueShift: '' },
+                { key: 3, value: '*', valueShift: '' },
+                { key: 4, value: '/', valueShift: '' },
+            ]
+        },
+        {
+            key: '4',
+            characters: [
+                { key: 1, value: '$', valueShift: '' },
+                { key: 2, value: '€', valueShift: '' },
+                { key: 3, value: '#', valueShift: '' },
+                { key: 4, value: '%', valueShift: '' },
+            ]
+        },
+        {
+            key: '5',
+            characters: [
+                { key: 1, value: '@', valueShift: '' },
+                { key: 2, value: '&', valueShift: '' },
+                { key: 3, value: '(', valueShift: '[' },
+                { key: 4, value: ')', valueShift: ']' },
+            ]
+        },
+        {
+            key: '6',
+            characters: [
+                { key: 1, value: '0', valueShift: '' },
+                { key: 2, value: '1', valueShift: '' },
+                { key: 3, value: '2', valueShift: '' },
+                { key: 4, value: '3', valueShift: '' },
+            ]
+        },
+    ],
+    characterGroupsEmoji: [
+        {
+            key: '0',
+            characters: [
+                { key: 1, value: '🤔', valueShift: '' },
+                { key: 2, value: '', valueShift: '' },
+                { key: 3, value: '\xa0', valueShift: '\xa0' },
+                { key: 4, value: '.', valueShift: ':' },
+            ]
+        },
+        {
+            key: '1',
+            characters: [
+                { key: 1, value: '', valueShift: '' },
+                { key: 2, value: '', valueShift: '' },
+                { key: 3, value: '', valueShift: '' },
+                { key: 4, value: '', valueShift: ''},
+            ]
+        },
+        {
+        key: '2',
+        characters: [
+            { key: 1, value: '', valueShift: '' },
+            { key: 2, value: '', valueShift: '' },
+            { key: 3, value: '', valueShift: '' },
+            { key: 4, value: '', valueShift: '' },
+        ]
+        },
+        {
+            key: '3',
+            characters: [
+                { key: 1, value: '', valueShift: '' },
+                { key: 2, value: '', valueShift: '' },
+                { key: 3, value: '', valueShift: '' },
+                { key: 4, value: '', valueShift: '' },
+            ]
+        },
+        {
+            key: '4',
+            characters: [
+                { key: 1, value: '', valueShift: '' },
+                { key: 2, value: '', valueShift: '' },
+                { key: 3, value: '', valueShift: '' },
+                { key: 4, value: '', valueShift: '' },
+            ]
+        },
+        {
+            key: '5',
+            characters: [
+                { key: 1, value: '', valueShift: '' },
+                { key: 2, value: '', valueShift: '' },
+                { key: 3, value: '', valueShift: '' },
+                { key: 4, value: '', valueShift: '' },
+            ]
+        },
+        {
+            key: '6',
+            characters: [
+                { key: 1, value: '', valueShift: '' },
+                { key: 2, value: '', valueShift: '' },
+                { key: 3, value: '', valueShift: '' },
+                { key: 4, value: '', valueShift: '' },
+            ]
+        },
     ]
 }
