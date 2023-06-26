@@ -1,13 +1,13 @@
 <template>
-  <div class="mt-8">
+  <div>
     <div
       v-if="!isSupported"
       class="flex flex-row items-center content-center px-4"
     >
-      <span class="text-5xl opacity-50">🚫</span>
-      <div class="flex flex-col px-4">
-        <span text="2xl">Gamepad is not supported on this device.</span>
-        <span opacity="70"
+      <i i-carbon-error class="text-5xl opacity-50" />
+      <div class="flex flex-col">
+        <span class="text-2xl">Gamepad is not supported on this device.</span>
+        <span class="opacity-70"
           >It seems your device does not support the Gamepad API. Check
           <a href="https://caniuse.com/gamepad">here</a> for a list supported
           devices.</span
@@ -16,9 +16,9 @@
     </div>
     <div
       v-else-if="gamepads.length === 0"
-      class="w-full flex flex-row items-center"
+      class="flex flex-row items-center content-center space-x-4"
     >
-      <span class="text-5xl opacity-50">🚫</span>
+      <span class="text-5xl opacity-50">🎮</span>
       <div class="flex flex-col">
         <span class="text-2xl">No Gamepad Detected</span>
         <span class="opacity-80"
@@ -27,11 +27,12 @@
         >
       </div>
     </div>
-    <div v-else>
-      <Keyboard
+    <div v-else class="space-y-4">
+      <Gamepad
         v-for="gamepad in gamepads"
         :key="gamepad.id"
         :gamepad="gamepad"
+        :show-gamepad="true"
       />
     </div>
   </div>
@@ -39,6 +40,6 @@
 
 <script setup lang="ts">
 import { useGamepad } from "@vueuse/core";
-import Keyboard from "~/components/Organisms/Keyboard.vue";
+import Gamepad from "@/components/Organisms/Gamepad.vue";
 const { isSupported, gamepads } = useGamepad();
 </script>
