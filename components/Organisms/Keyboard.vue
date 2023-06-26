@@ -1,9 +1,10 @@
 <template>
-  <div class="max-w-screen-lg mx-auto overflow-hidden">
+  <div class="max-w-lg lg:max-w-screen-md mx-auto overflow-hidden">
     <textarea 
       v-model="input" 
       ref="inputField"
-      class="w-full h-20 border rounded-md border-emerald-500 resize-none mb-4"  
+      @click="setCursor"
+      class="w-full h-20 p-2 border rounded-md border-black resize-none mb-4"  
       autofocus
     />
 
@@ -11,6 +12,7 @@
       <CharacterGroups 
         :gamepad="gamepad"
         ref="characterGroup"
+        @inputCharacter="addCharacter"
         />
     </div>
     
@@ -49,6 +51,10 @@ const placeCursor = () => {
   inputField.value?.setSelectionRange(cursorIndex.value, cursorIndex.value);
 };
 
+const setCursor = () => {
+  cursorIndex.value = inputField.value?.selectionStart ? inputField.value?.selectionStart : cursorIndex.value;
+};
+
 
 watch(() => controller.value?.bumper.left.pressed, (pressed) => {
   if (pressed && cursorIndex.value > 0) {
@@ -63,6 +69,16 @@ watch(() => controller.value?.bumper.right.pressed, (pressed) => {
     placeCursor();
   }
 });
+
+// input logic
+
+const addCharacter = (character: string) => {
+  input.value = input.value.slice(0, cursorIndex.value) + character + input.value.slice(cursorIndex.value);
+  cursorIndex.value++;
+  setTimeout(() => {
+    placeCursor();
+  }, 0);
+};
 
 // delete logic
 const deleteCharacter = () => {

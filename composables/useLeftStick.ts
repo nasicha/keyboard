@@ -1,13 +1,9 @@
+import { isWithinSmallerCircle } from "./useUtils";
 
 export const useLeftStick = (x: number, y: number) => {
 
   function degrees(radians: number) {
     return radians * (180 / Math.PI);
-  }
-
-  function isWithinSmallerCircle(x: number, y: number, r: number) {
-    let distance = Math.sqrt(x * x + y * y);
-    return distance <= r;
   }
 
   const deadzone = 0.4;

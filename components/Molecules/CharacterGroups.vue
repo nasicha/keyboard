@@ -48,7 +48,29 @@ watch(() => controller.value?.stick.left, () => {
 });
 
 // right stick logic
-// TODO!!!!!
+const inputCharacter = ref();
+
+const righStickTest = (x: number, y: number) => {
+  inputCharacter.value = useRightStick(x, y, charGroup.value);
+};
+
+watch(() => controller.value?.stick.right, () => {
+  let x = controller.value?.stick.right.horizontal ? controller.value?.stick.right.horizontal : 0;
+  let y = controller.value?.stick.right.vertical ? controller.value?.stick.right.vertical : 0;
+  righStickTest(x, y);
+});
+
+
+const emits = defineEmits(["inputCharacter"]);
+
+watch(inputCharacter, (position) => {
+  if(position === undefined || position === 0 || position > 4) return;
+  
+  const character = charGroups.value[charGroup.value].characters[position - 1].character;
+
+  emits("inputCharacter", character);
+});
+
 
 // shift character logic
 
