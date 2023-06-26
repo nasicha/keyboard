@@ -1,10 +1,10 @@
 <template>
-  <div class="max-w-lg lg:max-w-screen-md mx-auto overflow-hidden">
+  <div class="w-full p-2 lg:max-w-screen-md mx-auto overflow-hidden">
     <textarea 
       v-model="input" 
       ref="inputField"
       @click="setCursor"
-      class="w-full h-20 p-2 border rounded-md border-black resize-none mb-4"  
+      class="w-full h-20 p-2 border rounded-md border-black resize-none mb-8"  
       autofocus
     />
 
@@ -30,8 +30,6 @@ const props = defineProps<{ gamepad: Gamepad; showGamepad?: Boolean }>();
 
 // info & time variables
 const hideGamepadInfo = ref(false);
-const multiDeleteDelay = 800;
-const multiDeleteSpeed = 100;
 
 // input
 const input = ref("");
@@ -44,7 +42,9 @@ input.value = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam v
 const { gamepad } = toRefs(props);
 const controller = mapGamepadToXbox360Controller(gamepad);
 
-// cursor
+/*
+* cursor
+*/
 const cursorIndex = ref(input.value.length);
 
 const placeCursor = () => {
@@ -55,23 +55,62 @@ const setCursor = () => {
   cursorIndex.value = inputField.value?.selectionStart ? inputField.value?.selectionStart : cursorIndex.value;
 };
 
+const incrementCursor = () => {
+  cursorIndex.value++;
+  placeCursor();
+};
+
+const decrementCursor = () => {
+  cursorIndex.value--;
+  placeCursor();
+};
+
+const multiCursorDelay = 800;
+const multiCursorSpeed = 100;
+
+let cursorLeftTimeID: string | number | NodeJS.Timeout | undefined, cursorLeftIntervalID: string | number | NodeJS.Timeout | undefined;
 
 watch(() => controller.value?.bumper.left.pressed, (pressed) => {
   if (pressed && cursorIndex.value > 0) {
-    cursorIndex.value--;
-    placeCursor();
+    decrementCursor();
+
+    cursorLeftTimeID = setTimeout(() => {
+      if (controller.value?.bumper.left.pressed && cursorIndex.value > 0) {
+        cursorLeftIntervalID = setInterval(decrementCursor, multiCursorSpeed);
+      } else {
+        clearTimeout(cursorLeftTimeID);
+        clearInterval(cursorLeftIntervalID);
+      }
+    }, multiCursorDelay);
+  } else {
+    clearTimeout(cursorLeftTimeID);
+    clearInterval(cursorLeftIntervalID);
   }
 });
+
+let cursorRightTimeID: string | number | NodeJS.Timeout | undefined, cursorRightIntervalID: string | number | NodeJS.Timeout | undefined;
 
 watch(() => controller.value?.bumper.right.pressed, (pressed) => {
   if (pressed && cursorIndex.value < input.value.length) {
-    cursorIndex.value++;
-    placeCursor();
+    incrementCursor();
+
+    cursorRightTimeID = setTimeout(() => {
+      if (controller.value?.bumper.right.pressed && cursorIndex.value < input.value.length) {
+        cursorRightIntervalID = setInterval(incrementCursor, multiCursorSpeed);
+      } else {
+        clearTimeout(cursorRightTimeID);
+        clearInterval(cursorRightIntervalID);
+      }
+    }, multiCursorDelay);
+  } else {
+    clearTimeout(cursorRightTimeID);
+    clearInterval(cursorRightIntervalID);
   }
 });
 
-// input logic
-
+/*
+* input logic
+*/
 const addCharacter = (character: string) => {
   input.value = input.value.slice(0, cursorIndex.value) + character + input.value.slice(cursorIndex.value);
   cursorIndex.value++;
@@ -80,7 +119,12 @@ const addCharacter = (character: string) => {
   }, 0);
 };
 
-// delete logic
+/*
+* delete logic
+*/
+const multiDeleteDelay = 800;
+const multiDeleteSpeed = 100;
+
 const deleteCharacter = () => {
   if (cursorIndex.value === 0){
     return;
@@ -92,22 +136,22 @@ const deleteCharacter = () => {
     }, 0);
 }
 
-let timeID: string | number | NodeJS.Timeout | undefined, intervalID: string | number | NodeJS.Timeout | undefined;
+let deleteTimeID: string | number | NodeJS.Timeout | undefined, deleteIntervalID: string | number | NodeJS.Timeout | undefined;
 
 watch(() => controller.value?.buttons.x.pressed, (value) => {
   if (value) {
     deleteCharacter();
-    timeID = setTimeout(() => {
+    deleteTimeID = setTimeout(() => {
       if (controller.value?.buttons.x.pressed) {
-        intervalID = setInterval(deleteCharacter, multiDeleteSpeed);
+        deleteIntervalID = setInterval(deleteCharacter, multiDeleteSpeed);
       } else {
-        clearTimeout(timeID);
-        clearInterval(intervalID);
+        clearTimeout(deleteTimeID);
+        clearInterval(deleteIntervalID);
       }
     }, multiDeleteDelay);
   } else {
-    clearTimeout(timeID);
-    clearInterval(intervalID);
+    clearTimeout(deleteTimeID);
+    clearInterval(deleteIntervalID);
   }
 });
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col">
-    <span class="font-medium font-mono">
+    <span class="font-medium">
       <slot />
     </span>
     <span
