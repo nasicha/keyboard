@@ -8,10 +8,21 @@
     >
       <CharacterGroup :key="update" :group="group" :active="Number(group.key) === charGroup"/>
     </div>
+    <div
+      v-for="n in 7"
+      class="charactergroup_pedals" 
+    />
   </div>
-  <div class="flex flex-row justify-around max-w-screen-xs w-full">
-    <span class="border-2 rounded-full text-3xl px-4 py-2 mr-4">{{ layoutSymbol }}</span>
-    <span class="border-2 rounded-full text-3xl px-4 py-2" :class="shiftState === 0 ? '' : 'bg-black text-white border-black'">{{ shiftSymbol }}</span>
+  <div class="max-w-screen-sm w-full flex flex-row flex-wrap gap-3 justify-between">
+    <span class="border-2 rounded-full text-3xl px-4 py-2 mr-4" :class="shiftState === 0 ? '' : 'bg-black text-white border-black'">{{ shiftSymbol }}</span>
+    <span 
+      v-for="(symbol, index) in layoutSymbol"
+      v-key="index"
+      class=" min-w-[70px] border-2 rounded-full text-3xl px-4 py-2 text-center"
+      :class="layoutState === index ? 'bg-black text-white border-black' : ''"
+    >
+      {{ layoutState === index && shiftState !== 0 ? symbol.shiftValue : symbol.value }}
+    </span>
     <button 
       @click="toggleCharacterData" 
       v-html="useAlphabetic ? 'Use QWERTY-like' : 'Use Alphabetic'"
@@ -26,15 +37,21 @@ import { mapGamepadToXbox360Controller } from "@vueuse/core";
 
 const props = defineProps<{ gamepad: Gamepad }>();
 
+const update = ref(0);
+const layoutState = ref(0)
+const useAlphabetic = ref(localStorage.getItem('alphabetical') === 'true');
+
 /*
 * update character data
 */
-const update = ref(0);
-
-const useAlphabetic = ref(false)
-const layoutState = ref(0)
 const { characterGroups } = useCharacterData(false, useAlphabetic.value, layoutState.value);
 const charGroups = ref(characterGroups);
+
+onMounted(() => {
+  if (localStorage.getItem('alphabetical')) {
+    useAlphabetic.value = localStorage.getItem('alphabetical') === 'true';
+  }
+});
 
 /*
 * controller
@@ -75,14 +92,13 @@ watch(() => controller.value?.stick.left.button.pressed, (pressed) => {
 */
 const charGroup = ref(0);
 
-// Composable function to be executed whenever charGroup changes
 const characterGroupPosition = (x: number, y: number) => {
   charGroup.value = useLeftStick(x, y);
 };
 
-watch(() => controller.value?.stick.left, () => {
-  let x = controller.value?.stick.left.horizontal ? controller.value?.stick.left.horizontal : 0;
-  let y = controller.value?.stick.left.vertical ? controller.value?.stick.left.vertical : 0;
+watch(() => controller.value?.stick.left, (left) => {
+  let x = left?.horizontal ? left?.horizontal : 0;
+  let y = left?.vertical ? left?.vertical : 0;
   characterGroupPosition(x, y);
 });
 
@@ -95,9 +111,9 @@ const setInputCharacter = (x: number, y: number) => {
   inputCharacter.value = useRightStick(x, y, charGroup.value);
 };
 
-watch(() => controller.value?.stick.right, () => {
-  let x = controller.value?.stick.right.horizontal ? controller.value?.stick.right.horizontal : 0;
-  let y = controller.value?.stick.right.vertical ? controller.value?.stick.right.vertical : 0;
+watch(() => controller.value?.stick.right, (right) => {
+  let x = right?.horizontal ? right?.horizontal : 0;
+  let y = right?.vertical ? right?.vertical : 0;
   setInputCharacter(x, y);
 });
 
@@ -107,34 +123,28 @@ const emits = defineEmits(["inputCharacter"]);
 watch(inputCharacter, (position) => {
   if(position === undefined || position === 0 || position > 4) return;
   
-  let character = charGroups.value[charGroup.value].characters[position - 1].character;
+  let characters = charGroups.value[charGroup.value].characters[position - 1];
+  let character = characters.character;
 
   if(shiftState.value === 1){
-    character = character.toUpperCase();
+    character = characters.shiftedCharacter;
+    
     shiftState.value = 0;
   } else if(shiftState.value === 2){
-    character = character.toUpperCase();
+    character = characters.shiftedCharacter;
   }
   updateCharacterData();
-
   emits("inputCharacter", character);
 });
 
 /*
 * toggle layout
 */
-const layoutSymbol = ref('123');
+const layoutSymbol = ref([{ value: 'abc', shiftValue: 'ABC'}, { value: '123', shiftValue: '?!%'}, { value: '☻', shiftValue: '★'}]);
 
 watch(() => controller.value?.triggers.left.pressed, (pressed) => {
   if(pressed) {
     layoutState.value = (layoutState.value + 1) % 3;
-  if(layoutState.value === 0) {
-    layoutSymbol.value = '123';
-  } else if(layoutState.value === 1) {
-    layoutSymbol.value = '☺';
-  } else {
-    layoutSymbol.value = 'abc';
-  }
   
   shiftState.value = 0;
   updateCharacterData();
@@ -146,106 +156,87 @@ watch(() => controller.value?.triggers.left.pressed, (pressed) => {
 */
 const toggleCharacterData = () => {
   useAlphabetic.value = !useAlphabetic.value;
-  charGroups.value = useCharacterData(getShiftState(), useAlphabetic.value, layoutState.value).characterGroups;
-  update.value++;
+  localStorage.setItem('alphabetical', useAlphabetic.value.toString());
+  
+  updateCharacterData();
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/baseColors.scss";
-.charactergroups-circle {
-  position: relative;
-  max-width: 100%;
-  border-radius: 100%;
-  background: $background-color;
+@import "~/assets/scss/characterGroups.scss";
 
-  @media screen and (min-width: 641px) {
-    width: 640px;
-    height: 640px;
-    padding: 220px;
-  }
+  // pedals
+  .charactergroup_pedals {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    padding: 1rem;
+    background: $background-color;
+    border-radius: 50%;
+    z-index: 0;
 
-  @media screen and (max-width: 640px) {
-    width: 480px;
-    height: 480px;
-    padding: 165px;
-  }
+    &:last-of-type {
+      width: 300px;
+      height: 300px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
 
-  @media screen and (max-width: 480px) {
-    width: 300px;
-    height: 300px;
-    padding: 102px;
-  }
-}
+      
+    }
 
-.charactergroup {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  padding: 1rem;
-  border-radius: 100%;
-  border: 2px solid $base-color;
-  color: $base-color;
-  background-color: $secondary-color;
+    $item-count: 6;
+    $angle: (calc(360 / $item-count));
+    $rot: 0;
 
-  
-  &.active {
-    border: 2px solid $base-color;
-    background: $base-color;
-    color: $secondary-color;
-  }
+    @media screen and (min-width: 641px) {
+      $circle-size: 25rem;
 
-  &:first-of-type {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+      @for $i from 8 through calc(($item-count*2) + 1) {
+        &:nth-of-type(#{$i}) {
+          border: 2px solid rgba($base-color, 0.2);
+          transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
+        }
 
-  $item-count: 6;
-  $angle: (calc(360 / $item-count));
-  $rot: -90;
+        $rot: $rot + $angle;
+      }
+    }
 
-  @media screen and (min-width: 641px) {
-    $circle-size: 27rem;
+    @media screen and (max-width: 640px) {
+      $circle-size: 20rem;
+      width: 150px;
+      height: 150px;
 
-    @for $i from 2 through calc($item-count + 1) {
-      &:nth-of-type(#{$i}) {
-        transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
+      @for $i from 8 through calc(($item-count*2) + 1) {
+        &:nth-of-type(#{$i}) {
+          border: 2px solid rgba($base-color, 0.2);
+          transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
+        }
+
+        $rot: $rot + $angle;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+
+      &:last-of-type {
+        width: 200px;
+        height: 200px;
       }
 
-      $rot: $rot + $angle;
-    }
-  }
+      $circle-size: 12.5rem;
+      width: 95px;
+      height: 95px;
+      padding: 0.5rem;
 
-  @media screen and (max-width: 640px) {
-    width: 150px;
-    height: 150px;
+      @for $i from 8 through calc(($item-count*2) + 1) {
+        &:nth-of-type(#{$i}) {
+          border: 2px solid rgba($base-color, 0.2);
+          transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
+        }
 
-    $circle-size: 20rem;
-
-    @for $i from 2 through calc($item-count + 1) {
-      &:nth-of-type(#{$i}) {
-        transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
+        $rot: $rot + $angle;
       }
-
-      $rot: $rot + $angle;
     }
   }
-
-  @media screen and (max-width: 480px) {
-    width: 95px;
-    height: 95px;
-    padding: 0.5rem;
-
-    $circle-size: 12.5rem;
-
-    @for $i from 2 through calc($item-count + 1) {
-      &:nth-of-type(#{$i}) {
-        transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
-      }
-
-      $rot: $rot + $angle;
-    }
-  }
-}
 </style>

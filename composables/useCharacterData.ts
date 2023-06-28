@@ -21,9 +21,10 @@ export const useCharacterData = (shiftCharacters?: boolean, byAlphabet?: boolean
                 key: groups.key,
                 characters: groups.characters.map((char) => {
                     return {
+                        position: char.key,
                         character: shiftCharacters ? char.valueShift : char.value,
                         shiftedCharacter: char.valueShift,
-                        position: char.key,
+                        diacritics: char.diacritics,
                     }
                 })
             }

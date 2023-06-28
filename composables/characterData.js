@@ -15,7 +15,7 @@ export default {
                 { key: 1, value: 'y', valueShift: "Y" },
                 { key: 2, value: 'g', valueShift: "G" },
                 { key: 3, value: 'r', valueShift: "R" },
-                { key: 4, value: 'e', valueShift: "E" },
+                { key: 4, value: 'e', valueShift: "E", diacritics: ['é', 'è', 'ê', 'ë'] },
             ]
         },
         {
@@ -60,7 +60,7 @@ export default {
                 { key: 1, value: 'q', valueShift: "Q" },
                 { key: 2, value: 'w', valueShift: "W" },
                 { key: 3, value: 's', valueShift: "S" },
-                { key: 4, value: 'a', valueShift: "A" },
+                { key: 4, value: 'a', valueShift: "A", diacritics: ['á', 'à', 'â', 'ä', 'ã', 'å', 'æ'] },
             ]
         },
     ],
@@ -68,7 +68,7 @@ export default {
         {
             key: '0',
             characters: [
-                { key: 1, value: 'e', valueShift: 'E' },
+                { key: 1, value: 'e', valueShift: 'E', diacritics: ['é', 'è', 'ê', 'ë'] },
                 { key: 2, value: 'f', valueShift: 'F' },
                 { key: 3, value: '\xa0', valueShift: '\xa0' },
                 { key: 4, value: '.', valueShift: ':' },
@@ -77,7 +77,7 @@ export default {
         {
             key: '1',
             characters: [
-                { key: 1, value: 'a', valueShift: 'A' },
+                { key: 1, value: 'a', valueShift: 'A', diacritics: ['á', 'à', 'â', 'ä', 'ã', 'å', 'æ'] },
                 { key: 2, value: 'b', valueShift: 'B' },
                 { key: 3, value: 'c', valueShift: 'C' },
                 { key: 4, value: 'd', valueShift: 'D'},
