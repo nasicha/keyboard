@@ -1,5 +1,5 @@
 <template>
-  <div class="charactergroups-circle mb-8">
+  <div class="charactergroups-circle mb-12">
     <div
       v-for="group in charGroups"
       :key="group.key"
