@@ -16,12 +16,12 @@
   <div class="max-w-screen-sm w-full flex flex-row flex-wrap gap-3 justify-between">
     <span class="border-2 rounded-full text-3xl px-4 py-2 mr-4" :class="shiftState === 0 ? '' : 'bg-black text-white border-black'">{{ shiftSymbol }}</span>
     <span 
-      v-for="(symbol, index) in layoutSymbol"
-      v-key="index"
-      class=" min-w-[70px] border-2 rounded-full text-3xl px-4 py-2 text-center"
-      :class="layoutState === index ? 'bg-black text-white border-black' : ''"
+      v-for="symbol in layoutSymbol"
+      :key="symbol.state"
+      class=" min-w-[100px] border-2 rounded-full text-3xl px-4 py-2 text-center"
+      :class="layoutState === symbol.state ? 'bg-black text-white border-black' : ''"
     >
-      {{ layoutState === index && shiftState !== 0 ? symbol.shiftValue : symbol.value }}
+      {{ layoutState === symbol.state && shiftState !== 0 ? symbol.shiftValue : symbol.value }}
     </span>
     <button 
       @click="toggleCharacterData" 
@@ -34,6 +34,7 @@
 <script lang="ts" setup>
 import CharacterGroup from "@/components/Molecules/CharacterGroup.vue";
 import { mapGamepadToXbox360Controller } from "@vueuse/core";
+import { useCharacterData, useCharacterDataLayout } from "@/composables/useData";
 
 const props = defineProps<{ gamepad: Gamepad }>();
 
@@ -133,6 +134,7 @@ watch(inputCharacter, (position) => {
   } else if(shiftState.value === 2){
     character = characters.shiftedCharacter;
   }
+
   updateCharacterData();
   emits("inputCharacter", character);
 });
@@ -140,14 +142,13 @@ watch(inputCharacter, (position) => {
 /*
 * toggle layout
 */
-const layoutSymbol = ref([{ value: 'abc', shiftValue: 'ABC'}, { value: '123', shiftValue: '?!%'}, { value: '☻', shiftValue: '★'}]);
+const layoutSymbol = useCharacterDataLayout();
 
 watch(() => controller.value?.triggers.left.pressed, (pressed) => {
   if(pressed) {
     layoutState.value = (layoutState.value + 1) % 3;
-  
-  shiftState.value = 0;
-  updateCharacterData();
+    shiftState.value = 0;
+    updateCharacterData();
   }
 });
 

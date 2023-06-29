@@ -31,3 +31,9 @@ export const useCharacterData = (shiftCharacters?: boolean, byAlphabet?: boolean
         }),
     }
 }
+
+export const useCharacterDataLayout = () => {
+    return {
+        ...characterData.layouts,
+    }
+}
