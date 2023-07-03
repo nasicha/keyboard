@@ -13,21 +13,25 @@
       class="charactergroup_pedals" 
     />
   </div>
-  <div class="max-w-screen-sm w-full flex flex-row flex-wrap gap-3 justify-between">
-    <span class="border-2 rounded-full text-3xl px-4 py-2 mr-4" :class="shiftState === 0 ? '' : 'bg-black text-white border-black'">{{ shiftSymbol }}</span>
-    <span 
-      v-for="symbol in layoutSymbol"
-      :key="symbol.state"
-      class=" min-w-[100px] border-2 rounded-full text-3xl px-4 py-2 text-center"
-      :class="layoutState === symbol.state ? 'bg-black text-white border-black' : ''"
-    >
-      {{ layoutState === symbol.state && shiftState !== 0 ? symbol.shiftValue : symbol.value }}
-    </span>
-    <button 
-      @click="toggleCharacterData" 
-      v-html="useAlphabetic ? 'Use QWERTY-like' : 'Use Alphabetic'"
-      class="ml-auto"
-    />
+  <div class="max-w-screen-sm w-full flex flex-row flex-wrap gap-3 justify-between items-center">
+    <div class="gamepad-button" :class="shiftState === 0 ? '' : 'gamepad-button-selected'">
+      <span class="gamepad-icon">e</span>
+      <span class="text-3xl" >{{ shiftSymbol }}</span>
+    </div>
+    <div>
+      <span 
+        v-for="symbol in layoutSymbol"
+        :key="symbol.state"
+        class="gamepad-button min-w-[100px] last-of-type:!mr-0"
+        :class="layoutState === symbol.state ? 'gamepad-button-selected' : ''"
+      >
+        {{ layoutState === symbol.state && shiftState !== 0 ? symbol.shiftValue : symbol.value }}
+      </span>
+    </div>
+    <div class="gamepad-button min-w-[180px] flex items-center">
+      <span class="gamepad-icon">O</span>
+      <span class="text-xl">{{ useAlphabetic ? 'QWERTY-like' : 'Alphabetic' }}</span>
+    </div>
   </div>
 </template>
 
@@ -140,7 +144,7 @@ watch(inputCharacter, (position) => {
 });
 
 /*
-* toggle layout
+* toggle layout (left trigger)
 */
 const layoutSymbol = useCharacterDataLayout();
 
@@ -161,83 +165,28 @@ const toggleCharacterData = () => {
   
   updateCharacterData();
 }
+
+watch(() => controller.value?.dpad.up.pressed, (pressed) => {
+  if(pressed) {
+    toggleCharacterData();
+  }
+});
 </script>
 
 <style lang="scss" scoped>
 @import "~/assets/scss/characterGroups.scss";
 
-  // pedals
-  .charactergroup_pedals {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    padding: 1rem;
-    background: $background-color;
-    border-radius: 50%;
-    z-index: 0;
+.gamepad{
+  &-button {
+    @apply border-2 text-3xl rounded-full px-4 py-2 mr-4 justify-center;
 
-    &:last-of-type {
-      width: 300px;
-      height: 300px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-
-      
-    }
-
-    $item-count: 6;
-    $angle: (calc(360 / $item-count));
-    $rot: 0;
-
-    @media screen and (min-width: 641px) {
-      $circle-size: 25rem;
-
-      @for $i from 8 through calc(($item-count*2) + 1) {
-        &:nth-of-type(#{$i}) {
-          border: 2px solid rgba($base-color, 0.2);
-          transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
-        }
-
-        $rot: $rot + $angle;
-      }
-    }
-
-    @media screen and (max-width: 640px) {
-      $circle-size: 20rem;
-      width: 150px;
-      height: 150px;
-
-      @for $i from 8 through calc(($item-count*2) + 1) {
-        &:nth-of-type(#{$i}) {
-          border: 2px solid rgba($base-color, 0.2);
-          transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
-        }
-
-        $rot: $rot + $angle;
-      }
-    }
-
-    @media screen and (max-width: 480px) {
-
-      &:last-of-type {
-        width: 200px;
-        height: 200px;
-      }
-
-      $circle-size: 12.5rem;
-      width: 95px;
-      height: 95px;
-      padding: 0.5rem;
-
-      @for $i from 8 through calc(($item-count*2) + 1) {
-        &:nth-of-type(#{$i}) {
-          border: 2px solid rgba($base-color, 0.2);
-          transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
-        }
-
-        $rot: $rot + $angle;
-      }
+    &-selected {
+      @apply bg-black text-white border-black;
     }
   }
+
+  &-icon {
+    @apply font-icon text-2xl mr-1;
+  }
+}
 </style>
