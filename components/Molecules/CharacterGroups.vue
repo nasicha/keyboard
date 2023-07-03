@@ -4,30 +4,41 @@
       v-for="group in charGroups"
       :key="group.key"
       class="charactergroup transition-all duration-100 ease-in-out"
-      :class="Number(group.key) === charGroup ? 'active' : ''"
+      :class="Number(group.key) === charGroup ? 'active shadow-xl' : 'shadow-sm'"
     >
       <CharacterGroup :key="update" :group="group" :active="Number(group.key) === charGroup"/>
+      <div 
+        class="cross" 
+        :class="Number(group.key) === charGroup ? 'before:bg-white after:bg-white' : 'before:bg-black after:bg-black'"
+      ></div>
     </div>
     <div
       v-for="n in 7"
-      class="charactergroup_pedals" 
+      class="charactergroup-pedals" 
     />
   </div>
-  <div class="max-w-screen-sm w-full flex flex-row flex-wrap gap-3 justify-between">
-    <span class="border-2 rounded-full text-3xl px-4 py-2 mr-4" :class="shiftState === 0 ? '' : 'bg-black text-white border-black'">{{ shiftSymbol }}</span>
-    <span 
-      v-for="symbol in layoutSymbol"
-      :key="symbol.state"
-      class=" min-w-[100px] border-2 rounded-full text-3xl px-4 py-2 text-center"
-      :class="layoutState === symbol.state ? 'bg-black text-white border-black' : ''"
-    >
-      {{ layoutState === symbol.state && shiftState !== 0 ? symbol.shiftValue : symbol.value }}
-    </span>
-    <button 
-      @click="toggleCharacterData" 
-      v-html="useAlphabetic ? 'Use QWERTY-like' : 'Use Alphabetic'"
-      class="ml-auto"
-    />
+  <div class="max-w-screen-sm w-full flex flex-row flex-wrap gap-3 justify-between items-center">
+    <div class="gamepad-button min-w-[11rem] justify-center" :class="shiftState === 0 ? '' : 'gamepad-button-selected'">
+      <span class="gamepad-icon">e</span>
+      <span class="text-3xl mr-2" >{{ shiftSymbol }}</span>
+      <span>{{ shiftState !== 0 ? layoutSymbol[layoutState].shiftValue : layoutSymbol[layoutState].value }}</span>
+    </div>
+    <div class="gamepad-button">
+      <span class="gamepad-icon">k</span>
+      <span>{{ layoutSymbol[layoutState].nextValue }}</span>
+    </div>
+    <div class="gamepad-button">
+      <span class="gamepad-icon">b</span>
+      <span class="text-3xl font-bold -mt-4">␣</span>
+    </div>
+    <div class="gamepad-button">
+      <span class="gamepad-icon">Q</span>
+      <span class="text-3xl">⌫</span>
+    </div>
+    <div class="gamepad-button min-w-[180px]">
+      <span class="gamepad-icon">O</span>
+      <span class="text-xl">{{ useAlphabetic ? 'QWERTY-like' : 'Alphabetic' }}</span>
+    </div>
   </div>
 </template>
 
@@ -140,7 +151,7 @@ watch(inputCharacter, (position) => {
 });
 
 /*
-* toggle layout
+* toggle layout (left trigger)
 */
 const layoutSymbol = useCharacterDataLayout();
 
@@ -153,7 +164,7 @@ watch(() => controller.value?.triggers.left.pressed, (pressed) => {
 });
 
 /*
-* toggle character
+* toggle character (dpad up)
 */
 const toggleCharacterData = () => {
   useAlphabetic.value = !useAlphabetic.value;
@@ -161,83 +172,65 @@ const toggleCharacterData = () => {
   
   updateCharacterData();
 }
+
+watch(() => controller.value?.dpad.up.pressed, (pressed) => {
+  if(pressed) {
+    toggleCharacterData();
+  }
+});
 </script>
 
 <style lang="scss" scoped>
-@import "~/assets/scss/characterGroups.scss";
+@import "@/assets/scss/characterGroups.scss";
 
-  // pedals
-  .charactergroup_pedals {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    padding: 1rem;
-    background: $background-color;
-    border-radius: 50%;
-    z-index: 0;
+.gamepad{
+  &-button {
+    @apply flex min-w-[6rem] border-2 text-3xl rounded-xl px-4 py-2 mr-4 justify-between items-center;
 
-    &:last-of-type {
-      width: 300px;
-      height: 300px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-
-      
-    }
-
-    $item-count: 6;
-    $angle: (calc(360 / $item-count));
-    $rot: 0;
-
-    @media screen and (min-width: 641px) {
-      $circle-size: 25rem;
-
-      @for $i from 8 through calc(($item-count*2) + 1) {
-        &:nth-of-type(#{$i}) {
-          border: 2px solid rgba($base-color, 0.2);
-          transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
-        }
-
-        $rot: $rot + $angle;
-      }
-    }
-
-    @media screen and (max-width: 640px) {
-      $circle-size: 20rem;
-      width: 150px;
-      height: 150px;
-
-      @for $i from 8 through calc(($item-count*2) + 1) {
-        &:nth-of-type(#{$i}) {
-          border: 2px solid rgba($base-color, 0.2);
-          transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
-        }
-
-        $rot: $rot + $angle;
-      }
-    }
-
-    @media screen and (max-width: 480px) {
-
-      &:last-of-type {
-        width: 200px;
-        height: 200px;
-      }
-
-      $circle-size: 12.5rem;
-      width: 95px;
-      height: 95px;
-      padding: 0.5rem;
-
-      @for $i from 8 through calc(($item-count*2) + 1) {
-        &:nth-of-type(#{$i}) {
-          border: 2px solid rgba($base-color, 0.2);
-          transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
-        }
-
-        $rot: $rot + $angle;
-      }
+    &-selected {
+      background-color: $base-color;
+      border-color: $base-color;
+      color: $secondary-color;
     }
   }
+
+  &-icon {
+    @apply font-icon text-3xl mr-1;
+  }
+}
+
+
+.cross {
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 11px;
+  height: 210px;
+}
+.cross:before, .cross:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 210px;
+  width: 2px;
+
+  @media screen and (max-width: 640px) {
+    height: 152px;
+    left: 15px;
+    top: 14%;
+  }
+
+  @media screen and (max-width: 480px) {
+    height: 95px;
+    right: 28%;
+    top: 28%;
+  }
+}
+.cross:before {
+  transform: rotate(45deg);
+}
+.cross:after {
+  transform: rotate(-45deg);
+}
 </style>

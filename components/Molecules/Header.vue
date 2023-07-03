@@ -7,11 +7,15 @@
   </div>
 </template>
 <style lang="scss">
+@use "@/assets/scss/baseColors.scss" as *;
+
 .nav {
-  @apply flex w-full p-4 bg-slate-800;
+  @apply flex w-full p-4;
+  background-color: $base-color;
 
   & a {
     @apply w-1/4 text-center border-l-2 last:border-r-2 text-white;
+    
     &:hover {
       @apply underline;
     }

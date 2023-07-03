@@ -4,7 +4,7 @@
       v-model="input" 
       ref="inputField"
       @click="setCursor"
-      class="w-full min-h-[4rem] p-2 border rounded-md border-black resize-none mb-8"  
+      class="w-full min-h-[4rem] p-2 border rounded-md border-base resize-none mb-8"  
       autofocus
     />
 
@@ -23,6 +23,7 @@
 <script setup lang="ts">
 import GamepadInfo from "@/components/Molecules/GamepadInfo.vue";
 import CharacterGroups from "@/components/Molecules/CharacterGroups.vue";
+import { timeIntervalHelper } from "@/types/timeIntervalHelper";
 import { mapGamepadToXbox360Controller } from "@vueuse/core";
 import { toRefs } from "vue";
 
@@ -30,6 +31,9 @@ const props = defineProps<{ gamepad: Gamepad; showGamepad?: Boolean }>();
 
 // info & time variables
 const hideGamepadInfo = ref(false);
+
+const multiDelay = 600;
+const multiSpeed = 100;
 
 // input
 const input = ref("");
@@ -77,10 +81,7 @@ const decrementCursor = () => {
   placeCursor();
 };
 
-const multiCursorDelay = 800;
-const multiCursorSpeed = 100;
-
-let cursorLeftTimeID: string | number | NodeJS.Timeout | undefined, cursorLeftIntervalID: string | number | NodeJS.Timeout | undefined;
+let cursorLeftTimeID: timeIntervalHelper, cursorLeftIntervalID: timeIntervalHelper;
 
 watch(() => controller.value?.bumper.left.pressed, (pressed) => {
   if (pressed && cursorIndex.value > 0) {
@@ -88,19 +89,19 @@ watch(() => controller.value?.bumper.left.pressed, (pressed) => {
 
     cursorLeftTimeID = setTimeout(() => {
       if (controller.value?.bumper.left.pressed && cursorIndex.value > 0) {
-        cursorLeftIntervalID = setInterval(decrementCursor, multiCursorSpeed);
+        cursorLeftIntervalID = setInterval(decrementCursor, multiSpeed);
       } else {
         clearTimeout(cursorLeftTimeID);
         clearInterval(cursorLeftIntervalID);
       }
-    }, multiCursorDelay);
+    }, multiDelay);
   } else {
     clearTimeout(cursorLeftTimeID);
     clearInterval(cursorLeftIntervalID);
   }
 });
 
-let cursorRightTimeID: string | number | NodeJS.Timeout | undefined, cursorRightIntervalID: string | number | NodeJS.Timeout | undefined;
+let cursorRightTimeID: timeIntervalHelper, cursorRightIntervalID: timeIntervalHelper;
 
 watch(() => controller.value?.bumper.right.pressed, (pressed) => {
   if (pressed && cursorIndex.value < input.value.length) {
@@ -108,12 +109,12 @@ watch(() => controller.value?.bumper.right.pressed, (pressed) => {
 
     cursorRightTimeID = setTimeout(() => {
       if (controller.value?.bumper.right.pressed && cursorIndex.value < input.value.length) {
-        cursorRightIntervalID = setInterval(incrementCursor, multiCursorSpeed);
+        cursorRightIntervalID = setInterval(incrementCursor, multiSpeed);
       } else {
         clearTimeout(cursorRightTimeID);
         clearInterval(cursorRightIntervalID);
       }
-    }, multiCursorDelay);
+    }, multiDelay);
   } else {
     clearTimeout(cursorRightTimeID);
     clearInterval(cursorRightIntervalID);
@@ -132,12 +133,18 @@ const addCharacter = (character: string) => {
   }, 0);
 };
 
+/**
+ * space
+*/
+watch(() => controller.value?.triggers.right.pressed, (pressed) => {
+  if (pressed) {
+    addCharacter(" ");
+  }
+});
+
 /*
 * delete logic
 */
-const multiDeleteDelay = 800;
-const multiDeleteSpeed = 100;
-
 const deleteCharacter = () => {
   if (cursorIndex.value === 0){
     return;
@@ -156,12 +163,12 @@ watch(() => controller.value?.buttons.x.pressed, (value) => {
     deleteCharacter();
     deleteTimeID = setTimeout(() => {
       if (controller.value?.buttons.x.pressed) {
-        deleteIntervalID = setInterval(deleteCharacter, multiDeleteSpeed);
+        deleteIntervalID = setInterval(deleteCharacter, multiSpeed);
       } else {
         clearTimeout(deleteTimeID);
         clearInterval(deleteIntervalID);
       }
-    }, multiDeleteDelay);
+    }, multiDelay);
   } else {
     clearTimeout(deleteTimeID);
     clearInterval(deleteIntervalID);

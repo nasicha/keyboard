@@ -9,8 +9,3 @@ $active-control-color: #000;
 :root {
   --vp-c-brand-active: #{$active-control-color};
 }
-
-
-button {
-  @apply border-spacing-2 border-2 border-solid border-gray-400 rounded-md px-4 py-2;
-}

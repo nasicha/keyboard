@@ -1,8 +1,8 @@
 export default {
 	layouts: [
-		{state: 0, name: "default", value: "abc", shiftValue: "ABC" },
-		{state: 1, name: "symbols", value: "123", shiftValue: "?!%" },
-        {state: 2, name: "emoji", value: "☻", shiftValue: "★" },
+		{state: 0, name: "default", value: "abc", shiftValue: "ABC", nextValue: "123" },
+		{state: 1, name: "symbols", value: "123", shiftValue: "?!%", nextValue: "☻" },
+    {state: 2, name: "emoji", value: "☻", shiftValue: "★", nextValue: "abc" },
 	],
 	characterGroupsQWERTY: [
 		{
@@ -10,8 +10,8 @@ export default {
 			characters: [
 				{ key: 1, value: "t", valueShift: "T" },
 				{ key: 2, value: "h", valueShift: "H" },
-				{ key: 3, value: "\xa0", valueShift: "\xa0" },
-				{ key: 4, value: ".", valueShift: ":" },
+				{ key: 3, value: "?", valueShift: "!" },
+				{ key: 4, value: ".", valueShift: "," },
 			],
 		},
 		{
@@ -90,8 +90,8 @@ export default {
 					diacritics: ["é", "è", "ê", "ë"],
 				},
 				{ key: 2, value: "f", valueShift: "F" },
-				{ key: 3, value: "\xa0", valueShift: "\xa0" },
-				{ key: 4, value: ".", valueShift: ":" },
+				{ key: 3, value: "?", valueShift: "!" },
+				{ key: 4, value: ".", valueShift: "," },
 			],
 		},
 		{
@@ -158,28 +158,28 @@ export default {
 		{
 			key: "0",
 			characters: [
-				{ key: 1, value: "!", valueShift: "!" },
-				{ key: 2, value: "?", valueShift: "?" },
-				{ key: 3, value: "\xa0", valueShift: "\xa0" },
-				{ key: 4, value: ".", valueShift: ":" },
+				{ key: 1, value: "-", valueShift: "-" },
+				{ key: 2, value: "!", valueShift: "¡" },
+				{ key: 3, value: "?", valueShift: "¿" },
+				{ key: 4, value: ".", valueShift: "," },
 			],
 		},
 		{
 			key: "1",
 			characters: [
-				{ key: 1, value: "4", valueShift: "" },
-				{ key: 2, value: "5", valueShift: "" },
-				{ key: 3, value: "6", valueShift: "" },
-				{ key: 4, value: "7", valueShift: "" },
+				{ key: 1, value: "0", valueShift: "0" },
+				{ key: 2, value: "2", valueShift: "2" },
+				{ key: 3, value: "3", valueShift: "3" },
+				{ key: 4, value: "1", valueShift: "1" },
 			],
 		},
 		{
 			key: "2",
 			characters: [
-				{ key: 1, value: "8", valueShift: "" },
-				{ key: 2, value: "9", valueShift: "" },
-				{ key: 3, value: "'", valueShift: '"' },
-				{ key: 4, value: ",", valueShift: ";" },
+				{ key: 1, value: "8", valueShift: "8" },
+				{ key: 2, value: ":", valueShift: ";" },
+				{ key: 3, value: "\'", valueShift: '\"' },
+				{ key: 4, value: "9", valueShift: "9" },
 			],
 		},
 		{
@@ -212,10 +212,10 @@ export default {
 		{
 			key: "6",
 			characters: [
-				{ key: 1, value: "0", valueShift: "" },
-				{ key: 2, value: "1", valueShift: "" },
-				{ key: 3, value: "2", valueShift: "" },
-				{ key: 4, value: "3", valueShift: "" },
+				{ key: 1, value: "4", valueShift: "4" },
+				{ key: 2, value: "6", valueShift: "6" },
+				{ key: 3, value: "7", valueShift: "7" },
+				{ key: 4, value: "5", valueShift: "5" },
 			],
 		},
 	],
@@ -225,8 +225,8 @@ export default {
 			characters: [
 				{ key: 1, value: "😀", valueShift: "" },
 				{ key: 2, value: "", valueShift: "" },
-				{ key: 3, value: "\xa0", valueShift: "\xa0" },
-				{ key: 4, value: ".", valueShift: ":" },
+				{ key: 3, value: "?", valueShift: "!" },
+				{ key: 4, value: ".", valueShift: "," },
 			],
 		},
 		{
