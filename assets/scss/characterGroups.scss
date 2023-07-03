@@ -1,10 +1,30 @@
 
 @import "@/assets/scss/baseColors.scss";
+
+@mixin place-in-circle($length, $circle-size, $rot: -90) {
+  $item-count: 6;
+  $angle: (calc(360 / $item-count));
+  $rot: $rot;
+
+  @for $i from $length through calc(($item-count*2) + 1) {
+    &:nth-of-type(#{$i}) {
+      border: 2px solid $base-color;
+      transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
+    }
+
+    $rot: $rot + $angle;
+  }
+}
+
 .charactergroups-circle {
   position: relative;
   max-width: 100%;
   border-radius: 100%;
   // background: $background-color;
+  
+  &::after {
+    @apply absolute bg-white content-[''] rounded-full p-44 z-[2] -ml-[5rem] -mt-[5rem];
+  }
 
   @media screen and (min-width: 641px) {
     width: 630px;
@@ -48,20 +68,12 @@
     transform: translate(-50%, -50%);
   }
 
-  $item-count: 6;
-  $angle: (calc(360 / $item-count));
   $rot: -90;
 
   @media screen and (min-width: 641px) {
     $circle-size: 29rem;
 
-    @for $i from 2 through calc($item-count + 1) {
-      &:nth-of-type(#{$i}) {
-        transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
-      }
-
-      $rot: $rot + $angle;
-    }
+    @include place-in-circle(2, $circle-size);
   }
 
   @media screen and (max-width: 640px) {
@@ -70,13 +82,7 @@
 
     $circle-size: 21rem;
 
-    @for $i from 2 through calc($item-count + 1) {
-      &:nth-of-type(#{$i}) {
-        transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
-      }
-
-      $rot: $rot + $angle;
-    }
+    @include place-in-circle(2, $circle-size);
   }
 
   @media screen and (max-width: 480px) {
@@ -86,24 +92,15 @@
 
     $circle-size: 12.5rem;
 
-    @for $i from 2 through calc($item-count + 1) {
-      &:nth-of-type(#{$i}) {
-        transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
-      }
-
-      $rot: $rot + $angle;
-    }
+    @include place-in-circle(2, $circle-size);
   }
-
-
 }
 
-.charactergroup_pedals {
+.charactergroup-pedals {
   position: absolute;
   width: 200px;
   height: 200px;
   padding: 1rem;
-  background: $background-color;
   border-radius: 50%;
   z-index: 0;
 
@@ -113,25 +110,15 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
-    
   }
 
-  $item-count: 6;
-  $angle: (calc(360 / $item-count));
   $rot: 0;
 
   @media screen and (min-width: 641px) {
     $circle-size: 25rem;
 
-    @for $i from 8 through calc(($item-count*2) + 1) {
-      &:nth-of-type(#{$i}) {
-        border: 2px solid rgba($base-color, 0.2);
-        transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
-      }
+    @include place-in-circle(8, $circle-size, $rot);
 
-      $rot: $rot + $angle;
-    }
   }
 
   @media screen and (max-width: 640px) {
@@ -139,14 +126,8 @@
     width: 150px;
     height: 150px;
 
-    @for $i from 8 through calc(($item-count*2) + 1) {
-      &:nth-of-type(#{$i}) {
-        border: 2px solid rgba($base-color, 0.2);
-        transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
-      }
+    @include place-in-circle(8, $circle-size, $rot);
 
-      $rot: $rot + $angle;
-    }
   }
 
   @media screen and (max-width: 480px) {
@@ -161,13 +142,6 @@
     height: 95px;
     padding: 0.5rem;
 
-    @for $i from 8 through calc(($item-count*2) + 1) {
-      &:nth-of-type(#{$i}) {
-        border: 2px solid rgba($base-color, 0.2);
-        transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
-      }
-
-      $rot: $rot + $angle;
-    }
+    @include place-in-circle(8, $circle-size, $rot);
   }
 }

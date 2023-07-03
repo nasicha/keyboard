@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './pages/**/*.{html,js}',
-    './components/**/*.{html,js}',
+    './components/**/*.{vue,js,ts}',
+    './pages/**/*.vue',
   ],
   theme: {
     fontFamily: {
@@ -15,6 +15,15 @@ module.exports = {
       'lg': '1024px',
       'xl': '1280px',
       '2xl': '1536px',
+    },
+    colors: {
+      'transparent': 'transparent',
+      'current': 'currentColor',
+      'black': '#000000',
+      'white': '#ffffff',
+      'base': '#000000',
+      'secondary': '#ffffff',
+      'background': '#d7d7d7',
     },
     extend: {},
   },

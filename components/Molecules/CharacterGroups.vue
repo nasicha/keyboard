@@ -4,31 +4,38 @@
       v-for="group in charGroups"
       :key="group.key"
       class="charactergroup transition-all duration-100 ease-in-out"
-      :class="Number(group.key) === charGroup ? 'active' : ''"
+      :class="Number(group.key) === charGroup ? 'active shadow-xl' : 'shadow-sm'"
     >
       <CharacterGroup :key="update" :group="group" :active="Number(group.key) === charGroup"/>
+      <div 
+        class="cross" 
+        :class="Number(group.key) === charGroup ? 'before:bg-white after:bg-white' : 'before:bg-black after:bg-black'"
+      ></div>
     </div>
     <div
       v-for="n in 7"
-      class="charactergroup_pedals" 
+      class="charactergroup-pedals" 
     />
   </div>
   <div class="max-w-screen-sm w-full flex flex-row flex-wrap gap-3 justify-between items-center">
-    <div class="gamepad-button" :class="shiftState === 0 ? '' : 'gamepad-button-selected'">
+    <div class="gamepad-button min-w-[11rem] justify-center" :class="shiftState === 0 ? '' : 'gamepad-button-selected'">
       <span class="gamepad-icon">e</span>
-      <span class="text-3xl" >{{ shiftSymbol }}</span>
+      <span class="text-3xl mr-2" >{{ shiftSymbol }}</span>
+      <span>{{ shiftState !== 0 ? layoutSymbol[layoutState].shiftValue : layoutSymbol[layoutState].value }}</span>
     </div>
-    <div>
-      <span 
-        v-for="symbol in layoutSymbol"
-        :key="symbol.state"
-        class="gamepad-button min-w-[100px] last-of-type:!mr-0"
-        :class="layoutState === symbol.state ? 'gamepad-button-selected' : ''"
-      >
-        {{ layoutState === symbol.state && shiftState !== 0 ? symbol.shiftValue : symbol.value }}
-      </span>
+    <div class="gamepad-button">
+      <span class="gamepad-icon">k</span>
+      <span>{{ layoutSymbol[layoutState].nextValue }}</span>
     </div>
-    <div class="gamepad-button min-w-[180px] flex items-center">
+    <div class="gamepad-button">
+      <span class="gamepad-icon">b</span>
+      <span class="text-3xl font-bold -mt-4">␣</span>
+    </div>
+    <div class="gamepad-button">
+      <span class="gamepad-icon">Q</span>
+      <span class="text-3xl">⌫</span>
+    </div>
+    <div class="gamepad-button min-w-[180px]">
       <span class="gamepad-icon">O</span>
       <span class="text-xl">{{ useAlphabetic ? 'QWERTY-like' : 'Alphabetic' }}</span>
     </div>
@@ -157,7 +164,7 @@ watch(() => controller.value?.triggers.left.pressed, (pressed) => {
 });
 
 /*
-* toggle character
+* toggle character (dpad up)
 */
 const toggleCharacterData = () => {
   useAlphabetic.value = !useAlphabetic.value;
@@ -174,19 +181,44 @@ watch(() => controller.value?.dpad.up.pressed, (pressed) => {
 </script>
 
 <style lang="scss" scoped>
-@import "~/assets/scss/characterGroups.scss";
+@import "@/assets/scss/characterGroups.scss";
 
 .gamepad{
   &-button {
-    @apply border-2 text-3xl rounded-full px-4 py-2 mr-4 justify-center;
+    @apply flex min-w-[6rem] border-2 text-3xl rounded-xl px-4 py-2 mr-4 justify-between items-center;
 
     &-selected {
-      @apply bg-black text-white border-black;
+      background-color: base-color;
+      border-color: base-color;
+      color: secondary-color;
     }
   }
 
   &-icon {
-    @apply font-icon text-2xl mr-1;
+    @apply font-icon text-3xl mr-1 opacity-70;
   }
+}
+
+
+.cross {
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 11px;
+  height: 210px;
+}
+.cross:before, .cross:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 210px;
+  width: 2px;
+}
+.cross:before {
+  transform: rotate(45deg);
+}
+.cross:after {
+  transform: rotate(-45deg);
 }
 </style>
