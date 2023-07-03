@@ -36,7 +36,7 @@ const input = ref("");
 const inputField = ref<HTMLTextAreaElement | null>(null);
 
 // dummy input data
-input.value = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vitae diam eget nu";
+input.value = "Lorem ipsum dolor sit amet";
 
 // controller
 const { gamepad } = toRefs(props);
@@ -66,11 +66,13 @@ const setCursor = () => {
 };
 
 const incrementCursor = () => {
+  // TODO fix cursorIndex.value when input has emojis
   cursorIndex.value++;
   placeCursor();
 };
 
 const decrementCursor = () => {
+  // TODO fix cursorIndex.value when input has emojis
   cursorIndex.value--;
   placeCursor();
 };
@@ -123,7 +125,7 @@ watch(() => controller.value?.bumper.right.pressed, (pressed) => {
 */
 const addCharacter = (character: string) => {
   input.value = input.value.slice(0, cursorIndex.value) + character + input.value.slice(cursorIndex.value);
-  cursorIndex.value++;
+  cursorIndex.value += character.length;
   setTimeout(() => {
     updateTextareaHeight();
     placeCursor();

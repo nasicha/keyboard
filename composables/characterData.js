@@ -223,7 +223,7 @@ export default {
 		{
 			key: "0",
 			characters: [
-				{ key: 1, value: "U+1F914", valueShift: "" },
+				{ key: 1, value: "😀", valueShift: "" },
 				{ key: 2, value: "", valueShift: "" },
 				{ key: 3, value: "\xa0", valueShift: "\xa0" },
 				{ key: 4, value: ".", valueShift: ":" },
