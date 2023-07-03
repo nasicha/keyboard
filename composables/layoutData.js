@@ -33,5 +33,5 @@ export default {
         { key: "b7", value: "b", label: "Right Trigger" },
       ],
     }
-  ]
+  ],
 };

@@ -1,5 +1,6 @@
 export type character = {
+    position: number;
     character: string;
     shiftedCharacter: string;
-    position: number;
+    diacritics?: string[];
 } 

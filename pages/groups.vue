@@ -1,8 +1,6 @@
 <template>
 	<h1 class="pb-4">Groups</h1>
-
-	<ul
-	>
+	<ul>
 		<li
 		v-for="charGroup in characterGroups"
 		key="charGroup.key">
@@ -20,5 +18,6 @@
 </template>
 
 <script lang="ts" setup>
+import { useCharacterData } from "@/composables/useData";
 const { characterGroups } = useCharacterData();
 </script>

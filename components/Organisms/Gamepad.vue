@@ -1,9 +1,5 @@
 <template>
   <div class="max-w-screen-lg mx-auto overflow-hidden grid-cols-[2fr,1fr]">
-  <div class="w-full flex justify-center">
-    <CharacterGroups :gamepad="gamepad" />
-  </div>
-    
     <GamepadInfo :gamepad="gamepad" />
 
     <div
