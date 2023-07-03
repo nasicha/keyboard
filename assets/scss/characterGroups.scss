@@ -1,12 +1,12 @@
 
 @import "@/assets/scss/baseColors.scss";
 
-@mixin place-in-circle($length, $circle-size, $rot: -90) {
+@mixin place-in-circle($start, $circle-size, $rot: -90) {
   $item-count: 6;
   $angle: (calc(360 / $item-count));
   $rot: $rot;
 
-  @for $i from $length through calc(($item-count*2) + 1) {
+  @for $i from $start through calc(($item-count) + 1) {
     &:nth-of-type(#{$i}) {
       border: 2px solid $base-color;
       transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
@@ -23,13 +23,14 @@
   // background: $background-color;
   
   &::after {
-    @apply absolute bg-white content-[''] rounded-full p-44 z-[2] -ml-[5rem] -mt-[5rem];
+    @apply absolute bg-white content-[''] rounded-full p-20 -ml-[2rem] -mt-[2rem]
+    xs:p-32 sm:p-44 z-[2] sm:-ml-[5rem] sm:-mt-[5rem];
   }
 
   @media screen and (min-width: 641px) {
     width: 630px;
     height: 630px;
-    padding: 215px;
+    padding: 210px;
   }
 
   @media screen and (max-width: 640px) {
@@ -68,12 +69,13 @@
     transform: translate(-50%, -50%);
   }
 
+  $start: 2;
   $rot: -90;
 
   @media screen and (min-width: 641px) {
     $circle-size: 29rem;
 
-    @include place-in-circle(2, $circle-size);
+    @include place-in-circle($start, $circle-size);
   }
 
   @media screen and (max-width: 640px) {
@@ -82,7 +84,7 @@
 
     $circle-size: 21rem;
 
-    @include place-in-circle(2, $circle-size);
+    @include place-in-circle($start, $circle-size);
   }
 
   @media screen and (max-width: 480px) {
@@ -92,7 +94,7 @@
 
     $circle-size: 12.5rem;
 
-    @include place-in-circle(2, $circle-size);
+    @include place-in-circle($start, $circle-size);
   }
 }
 
@@ -104,29 +106,22 @@
   border-radius: 50%;
   z-index: 0;
 
-  &:last-of-type {
-    width: 300px;
-    height: 300px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
+  $end: 13;
   $rot: 0;
 
   @media screen and (min-width: 641px) {
-    $circle-size: 25rem;
+    $circle-size: 29rem;
 
-    @include place-in-circle(8, $circle-size, $rot);
+    @include place-in-circle($end, $circle-size, $rot);
 
   }
 
   @media screen and (max-width: 640px) {
-    $circle-size: 20rem;
-    width: 150px;
-    height: 150px;
+    $circle-size: 17.5rem;
+    width: 160px;
+    height: 160px;
 
-    @include place-in-circle(8, $circle-size, $rot);
+    @include place-in-circle($end, $circle-size, $rot);
 
   }
 
@@ -142,6 +137,6 @@
     height: 95px;
     padding: 0.5rem;
 
-    @include place-in-circle(8, $circle-size, $rot);
+    @include place-in-circle($end, $circle-size, $rot);
   }
 }

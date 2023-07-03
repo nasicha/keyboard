@@ -188,14 +188,14 @@ watch(() => controller.value?.dpad.up.pressed, (pressed) => {
     @apply flex min-w-[6rem] border-2 text-3xl rounded-xl px-4 py-2 mr-4 justify-between items-center;
 
     &-selected {
-      background-color: base-color;
-      border-color: base-color;
-      color: secondary-color;
+      background-color: $base-color;
+      border-color: $base-color;
+      color: $secondary-color;
     }
   }
 
   &-icon {
-    @apply font-icon text-3xl mr-1 opacity-70;
+    @apply font-icon text-3xl mr-1;
   }
 }
 
@@ -214,6 +214,18 @@ watch(() => controller.value?.dpad.up.pressed, (pressed) => {
   content: ' ';
   height: 210px;
   width: 2px;
+
+  @media screen and (max-width: 640px) {
+    height: 152px;
+    left: 15px;
+    top: 14%;
+  }
+
+  @media screen and (max-width: 480px) {
+    height: 95px;
+    right: 28%;
+    top: 28%;
+  }
 }
 .cross:before {
   transform: rotate(45deg);
