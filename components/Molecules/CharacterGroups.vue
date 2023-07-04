@@ -9,8 +9,8 @@
       <CharacterGroup :key="update" :group="group" :active="Number(group.key) === charGroup"/>
       <div 
         class="cross" 
-        :class="Number(group.key) === charGroup ? 'before:bg-white after:bg-white' : 'before:bg-black after:bg-black'"
-      ></div>
+        :class="Number(group.key) === charGroup ? 'before:bg-secondary after:bg-secondary' : 'before:bg-base after:bg-base'"
+      />
     </div>
     <div
       v-for="n in 7"
@@ -18,26 +18,26 @@
     />
   </div>
   <div class="max-w-screen-sm w-full flex flex-row flex-wrap gap-3 justify-between items-center">
-    <div class="gamepad-button min-w-[11rem] justify-center" :class="shiftState === 0 ? '' : 'gamepad-button-selected'">
-      <span class="gamepad-icon">e</span>
-      <span class="text-3xl mr-2" >{{ shiftSymbol }}</span>
+    <div class="info-wrapper" :class="shiftState === 0 ? '' : 'info-wrapper-selected'">
+      <span class="text-3xl" >{{ shiftSymbol }}</span>
+      <span class="info-icon">e</span>
+    </div>
       <span>{{ shiftState !== 0 ? layoutSymbol[layoutState].shiftValue : layoutSymbol[layoutState].value }}</span>
-    </div>
-    <div class="gamepad-button">
-      <span class="gamepad-icon">k</span>
+    <div class="info-wrapper">
       <span>{{ layoutSymbol[layoutState].nextValue }}</span>
+      <span class="info-icon">k</span>
     </div>
-    <div class="gamepad-button">
-      <span class="gamepad-icon">b</span>
-      <span class="text-3xl font-bold -mt-4">␣</span>
+    <div class="info-wrapper">
+      <span class="text-3xl font-bold">␣</span>
+      <span class="info-icon">b</span>
     </div>
-    <div class="gamepad-button">
-      <span class="gamepad-icon">Q</span>
+    <div class="info-wrapper">
       <span class="text-3xl">⌫</span>
+      <span class="info-icon">Q</span>
     </div>
-    <div class="gamepad-button min-w-[180px]">
-      <span class="gamepad-icon">O</span>
-      <span class="text-xl">{{ useAlphabetic ? 'QWERTY-like' : 'Alphabetic' }}</span>
+    <div class="info-wrapper">
+      <span class="text-xl">{{ useAlphabetic ? 'QWERTY-like' : 'Alpha' }}</span>
+      <span class="info-icon">O</span>
     </div>
   </div>
 </template>
@@ -183,9 +183,9 @@ watch(() => controller.value?.dpad.up.pressed, (pressed) => {
 <style lang="scss" scoped>
 @import "@/assets/scss/characterGroups.scss";
 
-.gamepad{
-  &-button {
-    @apply flex min-w-[6rem] border-2 text-3xl rounded-xl px-4 py-2 mr-4 justify-between items-center;
+.info{
+  &-wrapper {
+    @apply flex flex-col w-[100px] h-[100px] border-2 border-background text-3xl rounded-full px-2 py-2 mr-4 justify-between items-center;
 
     &-selected {
       background-color: $base-color;
@@ -195,42 +195,39 @@ watch(() => controller.value?.dpad.up.pressed, (pressed) => {
   }
 
   &-icon {
-    @apply font-icon text-3xl mr-1;
+    @apply font-icon text-[1.75rem];
   }
 }
 
 
 .cross {
-  position: absolute;
-  right: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 11px;
-  height: 210px;
-}
-.cross:before, .cross:after {
-  position: absolute;
-  left: 15px;
-  content: ' ';
-  height: 210px;
-  width: 2px;
+  @apply absolute right-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[11px] h-[210px];
 
-  @media screen and (max-width: 640px) {
-    height: 152px;
+  &:before, &:after {
+    position: absolute;
     left: 15px;
-    top: 14%;
+    content: ' ';
+    height: 208px;
+    width: 2px;
+
+    @media screen and (max-width: 640px) {
+      height: 152px;
+      left: 15px;
+      top: 14%;
+    }
+
+    @media screen and (max-width: 480px) {
+      height: 95px;
+      right: 28%;
+      top: 28%;
+    }
   }
 
-  @media screen and (max-width: 480px) {
-    height: 95px;
-    right: 28%;
-    top: 28%;
+  &:before {
+    transform: rotate(45deg);
   }
-}
-.cross:before {
-  transform: rotate(45deg);
-}
-.cross:after {
-  transform: rotate(-45deg);
+  &:after {
+    transform: rotate(-45deg);
+  }
 }
 </style>
