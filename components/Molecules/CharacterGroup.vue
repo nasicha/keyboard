@@ -4,7 +4,7 @@
       v-for="character in group.characters"
       :key="character.position"
       :class="active ? 'active' : ''"
-      class="rounded-full text-center leading-[1rem] xs:leading-[3.5rem] sm:leading-[5.25rem]"
+      class="rounded-full text-center leading-[1rem] sm:leading-[3.5rem] md:leading-[5.25rem]"
     >
       <Character :character="character.character" />
     </div>

@@ -1,16 +1,17 @@
 <template>
-  <div class="w-full p-2 lg:max-w-screen-md mx-auto overflow-hidden">
+  <div class="w-full p-2 md:max-w-screen-md mx-auto overflow-hidden">
     <textarea 
       v-model="input" 
       ref="inputField"
       @click="setCursor"
-      class="w-full min-h-[4rem] p-2 border rounded-md border-base resize-none mb-8"  
+      class="w-full min-h-[4rem] p-2 border rounded-md border-base resize-none mb-4"  
       autofocus
     />
 
-    <div class="w-full flex flex-col items-center">
+    <div class="w-full flex flex-col">
       <CharacterGroups 
         :gamepad="gamepad"
+        :animate="animate"
         ref="characterGroup"
         @inputCharacter="addCharacter"
         />
@@ -31,6 +32,11 @@ const props = defineProps<{ gamepad: Gamepad; showGamepad?: Boolean }>();
 
 // info & time variables
 const hideGamepadInfo = ref(false);
+const animate = reactive<{ [key: string]: boolean }>({
+  animateDelete: false,
+  animateCursorRight: false,
+  animateCursorLeft: false,
+});
 
 const multiDelay = 600;
 const multiSpeed = 100;
@@ -86,6 +92,7 @@ let cursorLeftTimeID: timeIntervalHelper, cursorLeftIntervalID: timeIntervalHelp
 watch(() => controller.value?.bumper.left.pressed, (pressed) => {
   if (pressed && cursorIndex.value > 0) {
     decrementCursor();
+    animate.animateCursorLeft = true;
 
     cursorLeftTimeID = setTimeout(() => {
       if (controller.value?.bumper.left.pressed && cursorIndex.value > 0) {
@@ -96,6 +103,7 @@ watch(() => controller.value?.bumper.left.pressed, (pressed) => {
       }
     }, multiDelay);
   } else {
+    animate.animateCursorLeft = false;
     clearTimeout(cursorLeftTimeID);
     clearInterval(cursorLeftIntervalID);
   }
@@ -106,6 +114,7 @@ let cursorRightTimeID: timeIntervalHelper, cursorRightIntervalID: timeIntervalHe
 watch(() => controller.value?.bumper.right.pressed, (pressed) => {
   if (pressed && cursorIndex.value < input.value.length) {
     incrementCursor();
+    animate.animateCursorRight = true;
 
     cursorRightTimeID = setTimeout(() => {
       if (controller.value?.bumper.right.pressed && cursorIndex.value < input.value.length) {
@@ -116,6 +125,7 @@ watch(() => controller.value?.bumper.right.pressed, (pressed) => {
       }
     }, multiDelay);
   } else {
+    animate.animateCursorRight = false;
     clearTimeout(cursorRightTimeID);
     clearInterval(cursorRightIntervalID);
   }
@@ -133,19 +143,12 @@ const addCharacter = (character: string) => {
   }, 0);
 };
 
-/**
- * space
-*/
-watch(() => controller.value?.triggers.right.pressed, (pressed) => {
-  if (pressed) {
-    addCharacter(" ");
-  }
-});
 
 /*
 * delete logic
 */
 const deleteCharacter = () => {
+    animate.animateDelete = true;
   if (cursorIndex.value === 0){
     return;
   }
@@ -153,13 +156,15 @@ const deleteCharacter = () => {
   cursorIndex.value--;
   setTimeout(() => {
       placeCursor();
-    }, 0);
+    },
+    0);
+
 }
 
-let deleteTimeID: string | number | NodeJS.Timeout | undefined, deleteIntervalID: string | number | NodeJS.Timeout | undefined;
+let deleteTimeID: timeIntervalHelper, deleteIntervalID: timeIntervalHelper;
 
-watch(() => controller.value?.buttons.x.pressed, (value) => {
-  if (value) {
+watch(() => controller.value?.buttons.x.pressed, (pressed) => {
+  if (pressed) {
     deleteCharacter();
     deleteTimeID = setTimeout(() => {
       if (controller.value?.buttons.x.pressed) {
@@ -170,6 +175,7 @@ watch(() => controller.value?.buttons.x.pressed, (value) => {
       }
     }, multiDelay);
   } else {
+    animate.animateDelete = false;
     clearTimeout(deleteTimeID);
     clearInterval(deleteIntervalID);
   }

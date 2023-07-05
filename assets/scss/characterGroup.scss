@@ -2,49 +2,26 @@
 @import "@/assets/scss/utils.scss";
 @import "@/assets/scss/baseColors.scss";
 
+$item-count: 4;
+
+$circle-size: 3.5rem;
+$item-size: 2rem;
+
+$circle-size-sm: 5.75rem;
+$item-size-sm: 3.5rem;
+
+$circle-size-md: 8em;
+$item-size-md: 4.75em;
 
 .charactergroup-circle {
-  $item-count: 4;
-
-  @media screen and (min-width: 641px) {
-    $circle-size: 8em;
-    $item-size: 4.75em;
-
-    @include on-inner-circle($item-count, $circle-size, $item-size); 
-  }
-
-
-  @media screen and (max-width: 640px) {
-    $circle-size: 5.75rem;
-    $item-size: 3.5rem;
-
-    @include on-inner-circle($item-count, $circle-size, $item-size); 
-  }
-
-  @media screen and (max-width: 480px) {
-    $circle-size: 3.5rem;
-    $item-size: 2rem;
-
-    @include on-inner-circle($item-count, $circle-size, $item-size); 
-  }
-
+  @include on-inner-circle($item-count, $circle-size, $item-size); 
 
   > div {
-    top:  65%; 
-    left: 65%;
+    top:  69%; 
+    left: 69%;
     color: $base-color;
     // border: 2px solid $base-color;
     // background-color: $secondary-color;
-
-    @media screen and (max-width: 640px) {
-      top:  61%; 
-      left: 61%;
-    }
-
-    @media screen and (max-width: 480px) {
-      top:  69%; 
-      left: 69%;
-    }
 
     &.active {
       color: $secondary-color;
@@ -52,6 +29,27 @@
       // background-color: $base-color;
     }
   }
+}
 
+@screen sm {
+  .charactergroup-circle {
+    @include on-inner-circle($item-count, $circle-size-sm, $item-size-sm); 
+
+    > div {
+      top:  61%; 
+      left: 61%;
+    }
+  }
+}
+
+@screen md {
+  .charactergroup-circle {
+    @include on-inner-circle($item-count, $circle-size-md, $item-size-md); 
+
+    > div {
+      top:  65%; 
+      left: 65%;
+    }
+  }
 
 }
