@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-8">
+  <div class="mt-4">
     <div
       v-if="!isSupported"
       class="w-full flex flex-row justify-center"

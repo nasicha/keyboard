@@ -14,6 +14,7 @@
     "@nuxtjs/tailwindcss": "^6.3.1",
     "@tailwindcss/typography": "^0.5.9",
     "@vueuse/core": "^9.12.0",
-    "sass": "^1.58.0"
+    "sass": "^1.58.0",
+    "vite-svg-loader": "^4.0.0"
   }
 }

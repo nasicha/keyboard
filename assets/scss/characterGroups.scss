@@ -1,14 +1,28 @@
 
 @import "@/assets/scss/baseColors.scss";
 
+
+$start-group: 2;
+$end-pedal: 13;
+$rot-pedal: 0;
+$circle-size: 12.5rem;
+$circle-size-sm: 21rem;
+$circle-size-md: 29rem;
+
 @mixin place-in-circle($start, $circle-size, $rot: -90) {
   $item-count: 6;
   $angle: (calc(360 / $item-count));
-  $rot: $rot;
+  $pedal: false;
+  
+  @if $rot == 0 {
+    $pedal: true;
+  }
 
   @for $i from $start through calc(($item-count) + 1) {
     &:nth-of-type(#{$i}) {
-      border: 2px solid $base-color;
+      @if $pedal {
+        border: 2px solid $base-color;
+      }
       transform: rotate($rot * 1deg) translate(calc($circle-size / 2)) rotate($rot * -1deg);
     }
 
@@ -20,45 +34,38 @@
   position: relative;
   max-width: 100%;
   border-radius: 100%;
-  // background: $background-color;
+  align-self: center;
+  width: 300px;
+  height: 300px;
+  padding: 102px;
   
   &::after {
-    @apply absolute bg-white content-[''] rounded-full p-20 -ml-[2rem] -mt-[2rem]
-    xs:p-32 sm:p-44 z-[2] sm:-ml-[5rem] sm:-mt-[5rem];
-  }
-
-  @media screen and (min-width: 641px) {
-    width: 630px;
-    height: 630px;
-    padding: 210px;
-  }
-
-  @media screen and (max-width: 640px) {
-    width: 470px;
-    height: 470px;
-    padding: 160px;
-  }
-
-  @media screen and (max-width: 480px) {
-    width: 300px;
-    height: 300px;
-    padding: 102px;
+    position: absolute;
+    content: '';
+    background: $secondary-color;
+    border-radius: 100%;
+    padding: 5rem;
+    margin: -2rem 0 0 -2rem;
+    z-index: 2;
   }
 }
 
 .charactergroup {
   position: absolute;
-  width: 210px;
-  height: 210px;
-  padding: 1.25rem;
   border-radius: 100%;
   border: 2px solid $base-color;
   color: $base-color;
   background-color: $secondary-color;
   z-index: 10;
+
+  width: 97px;
+  height: 97px;
+  padding: 0.5rem;
+
+  @include place-in-circle($start-group, $circle-size);
   
   &.active {
-    border: 2px solid $base-color;
+    border: 2px solid $secondary-color;
     background: $base-color;
     color: $secondary-color;
   }
@@ -69,74 +76,120 @@
     transform: translate(-50%, -50%);
   }
 
-  $start: 2;
-  $rot: -90;
-
-  @media screen and (min-width: 641px) {
-    $circle-size: 29rem;
-
-    @include place-in-circle($start, $circle-size);
-  }
-
-  @media screen and (max-width: 640px) {
-    width: 155px;
-    height: 155px;
-
-    $circle-size: 21rem;
-
-    @include place-in-circle($start, $circle-size);
-  }
-
-  @media screen and (max-width: 480px) {
-    width: 97px;
-    height: 97px;
-    padding: 0.5rem;
-
-    $circle-size: 12.5rem;
-
-    @include place-in-circle($start, $circle-size);
-  }
-}
-
-.charactergroup-pedals {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  padding: 1rem;
-  border-radius: 50%;
-  z-index: 0;
-
-  $end: 13;
-  $rot: 0;
-
-  @media screen and (min-width: 641px) {
-    $circle-size: 29rem;
-
-    @include place-in-circle($end, $circle-size, $rot);
-
-  }
-
-  @media screen and (max-width: 640px) {
-    $circle-size: 17.5rem;
-    width: 160px;
-    height: 160px;
-
-    @include place-in-circle($end, $circle-size, $rot);
-
-  }
-
-  @media screen and (max-width: 480px) {
-
-    &:last-of-type {
-      width: 200px;
-      height: 200px;
-    }
-
-    $circle-size: 12.5rem;
+  &-pedals {
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+    background-color: $secondary-color;
+  
     width: 95px;
     height: 95px;
     padding: 0.5rem;
+  
+    @include place-in-circle($end-pedal, $circle-size, $rot-pedal);
+  
+  }
+}
 
-    @include place-in-circle($end, $circle-size, $rot);
+.cross {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%);
+  width: 11px;
+  height: 210px;
+
+  &:before, &:after {
+    position: absolute;
+    content: ' ';
+    width: 2px;
+    height: 95px;
+    top: 28%;
+    left: 15px;
+    right: 28%;
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+  &:after {
+    transform: rotate(-45deg);
+  }
+}
+
+@screen sm {
+  .charactergroups-circle {
+    width: 470px;
+    height: 470px;
+    padding: 157px;
+
+    &::after {
+      padding: 8rem;
+      margin: -3rem 0 0 -3rem;
+    }
+  }
+
+  .charactergroup {
+    width: 155px;
+    height: 155px;
+    padding: 1.25rem;
+
+    $circle-size: 21rem;
+
+    @include place-in-circle($start-group, $circle-size-sm);
+
+    &-pedals {
+      width: 160px;
+      height: 160px;
+      
+      $circle-size: 21rem;
+  
+      @include place-in-circle($end-pedal, $circle-size-sm, $rot-pedal);  
+    }
+  }
+
+  .cross::before, .cross::after {
+    height: 152px;
+    top: 14%;
+    left: 15px;
+  }
+}
+
+
+
+@screen md {
+  .charactergroups-circle {    
+    width: 630px;
+    height: 630px;
+    padding: 210px;
+
+    &::after {
+      padding: 11rem;
+      margin: -5rem 0 0 -5rem;
+    }
+  }
+
+  .charactergroup { 
+    width: 210px;
+    height: 210px;
+
+    $circle-size: 29rem;
+
+    @include place-in-circle($start-group, $circle-size-md);
+
+    &-pedals {
+      width: 200px;
+      height: 200px;
+      padding: 1rem;
+
+      $circle-size: 29rem;
+
+      @include place-in-circle($end-pedal, $circle-size-md, $rot-pedal);
+    }
+  }
+
+  .cross::before, .cross::after {
+    height: 208px;
+    top: 0;
   }
 }

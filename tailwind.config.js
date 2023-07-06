@@ -5,9 +5,6 @@ module.exports = {
     './pages/**/*.vue',
   ],
   theme: {
-    fontFamily: {
-      icon: '"EsquireGenericGamepdFont_CL", "EsquireGenericGamepdFont_CS"',
-    },
     screens: {
       'xs': '480px',
       'sm': '640px',
@@ -23,7 +20,7 @@ module.exports = {
       'white': '#ffffff',
       'base': '#000000',
       'secondary': '#ffffff',
-      'background': '#d7d7d7',
+      'background': '#6e6e6e',
     },
     extend: {},
   },

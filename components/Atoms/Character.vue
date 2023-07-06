@@ -1,5 +1,5 @@
 <template>
-  <span class="text-lg xs:text-2xl sm:text-4xl">{{ character }}</span>
+  <span class="text-lg sm:text-2xl md:text-4xl">{{ character }}</span>
 </template>
 
 <script lang="ts" setup>
