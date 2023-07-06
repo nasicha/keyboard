@@ -48,7 +48,7 @@
       <IconLB class="info-icon" />
     </div>
     <div class="info-wrapper info-wrapper-mid">
-      <span class="info-text">{{ useAlphabetic ? "QWERTY-like" : "Alpha" }}</span>
+      <span class="info-text-mid">{{ useAlphabetic ? "QWERTY" : "Alpha" }}</span>
       <IconUp class="info-icon" />
     </div>
     <div class="info-wrapper" :class="{ animatePress: props.animate.animateCursorRight }">
@@ -268,12 +268,12 @@ watch(
     @apply -mt-14;
 
     &-mid {
-      @apply flex flex-row justify-center -mt-2;
+      @apply flex flex-row justify-center -mt-2 text-xl;
     }
   }
 
   &-wrapper {
-    @apply flex flex-col w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 border-2 border-background text-xl rounded-full p-1 justify-evenly items-center shadow-md;
+    @apply flex flex-col w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 border-2 border-background text-xl rounded-full p-1 justify-evenly items-center shadow-md text-center;
 
     & svg {
         @apply opacity-70;
@@ -293,6 +293,10 @@ watch(
 
   &-text {
     @apply text-xl md:text-3xl;
+
+    &-mid {
+      @apply text-xs sm:text-base md:text-xl break-all;
+    }
   }
   &-icon {
     @apply h-4 w-4 md:h-7 md:w-7;
