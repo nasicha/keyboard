@@ -1,9 +1,10 @@
 <template>
-  <div class="w-full p-2 md:max-w-screen-md mx-auto overflow-hidden">
+  <div class="w-full px-2 md:max-w-screen-md mx-auto overflow-hidden">
+    <span v-html="dummy" class="w-full h-auto p-2 resize-none" disabled/>
     <textarea 
       v-model="input" 
       ref="inputField"
-      @click="setCursor"
+      @click="placeCursor"
       class="w-full min-h-[4rem] p-2 border rounded-md border-base resize-none mb-4"  
       autofocus
     />
@@ -43,10 +44,12 @@ const multiSpeed = 100;
 
 // input
 const input = ref("");
+const inputArray = ref<string[]>([]);
 const inputField = ref<HTMLTextAreaElement | null>(null);
 
 // dummy input data
-input.value = "Lorem ipsum dolor sit amet";
+const dummy = "Lorem ipsum dolor sit amet";
+inputArray.value = input.value.split("");
 
 // controller
 const { gamepad } = toRefs(props);
@@ -66,68 +69,73 @@ function updateTextareaHeight() {
 * cursor
 */
 const cursorIndex = ref(input.value.length);
+const inputArrayIndex = ref(inputArray.value.length);
 
 const placeCursor = () => {
   inputField.value?.setSelectionRange(cursorIndex.value, cursorIndex.value);
 };
 
-const setCursor = () => {
-  cursorIndex.value = inputField.value?.selectionStart ? inputField.value?.selectionStart : cursorIndex.value;
-};
-
 const incrementCursor = () => {
-  // TODO fix cursorIndex.value when input has emojis
-  cursorIndex.value++;
-  placeCursor();
+  if(inputArrayIndex.value < inputArray.value.length) {
+    inputArrayIndex.value++;
+    cursorIndex.value += inputArray.value[inputArrayIndex.value-1].length;
+    placeCursor();
+  }
 };
 
 const decrementCursor = () => {
-  // TODO fix cursorIndex.value when input has emojis
-  cursorIndex.value--;
-  placeCursor();
+  if(inputArrayIndex.value > 0) {
+    inputArrayIndex.value--;
+    cursorIndex.value -= inputArray.value[inputArrayIndex.value].length;
+    placeCursor();
+  }
 };
 
 let cursorLeftTimeID: timeIntervalHelper, cursorLeftIntervalID: timeIntervalHelper;
 
 watch(() => controller.value?.bumper.left.pressed, (pressed) => {
-  if (pressed && cursorIndex.value > 0) {
-    decrementCursor();
-    animate.animateCursorLeft = true;
+  if (pressed && inputArrayIndex.value > 0) {
+      decrementCursor();
+      animate.animateCursorLeft = true;
 
     cursorLeftTimeID = setTimeout(() => {
-      if (controller.value?.bumper.left.pressed && cursorIndex.value > 0) {
+      if (controller.value?.bumper.left.pressed && inputArrayIndex.value > 0 && cursorLeftIntervalID === undefined) {
         cursorLeftIntervalID = setInterval(decrementCursor, multiSpeed);
       } else {
         clearTimeout(cursorLeftTimeID);
         clearInterval(cursorLeftIntervalID);
+        cursorLeftIntervalID = undefined;
       }
     }, multiDelay);
   } else {
     animate.animateCursorLeft = false;
     clearTimeout(cursorLeftTimeID);
     clearInterval(cursorLeftIntervalID);
+    cursorLeftIntervalID = undefined;
   }
 });
 
 let cursorRightTimeID: timeIntervalHelper, cursorRightIntervalID: timeIntervalHelper;
 
 watch(() => controller.value?.bumper.right.pressed, (pressed) => {
-  if (pressed && cursorIndex.value < input.value.length) {
+  if (pressed && inputArrayIndex.value < inputArray.value.length) {
     incrementCursor();
     animate.animateCursorRight = true;
 
     cursorRightTimeID = setTimeout(() => {
-      if (controller.value?.bumper.right.pressed && cursorIndex.value < input.value.length) {
+      if (controller.value?.bumper.right.pressed && inputArrayIndex.value < inputArray.value.length && cursorRightIntervalID === undefined) {
         cursorRightIntervalID = setInterval(incrementCursor, multiSpeed);
       } else {
         clearTimeout(cursorRightTimeID);
         clearInterval(cursorRightIntervalID);
+        cursorRightIntervalID = undefined;
       }
     }, multiDelay);
   } else {
     animate.animateCursorRight = false;
     clearTimeout(cursorRightTimeID);
     clearInterval(cursorRightIntervalID);
+    cursorRightIntervalID = undefined;
   }
 });
 
@@ -135,8 +143,11 @@ watch(() => controller.value?.bumper.right.pressed, (pressed) => {
 * input logic
 */
 const addCharacter = (character: string) => {
-  input.value = input.value.slice(0, cursorIndex.value) + character + input.value.slice(cursorIndex.value);
+  inputArray.value.splice(inputArrayIndex.value, 0, character);
+  input.value = inputArray.value.join("");
+  inputArrayIndex.value++;
   cursorIndex.value += character.length;
+
   setTimeout(() => {
     updateTextareaHeight();
     placeCursor();
@@ -148,12 +159,19 @@ const addCharacter = (character: string) => {
 * delete logic
 */
 const deleteCharacter = () => {
-    animate.animateDelete = true;
+  animate.animateDelete = true;
+
   if (cursorIndex.value === 0){
     return;
   }
-  input.value = input.value.slice(0, cursorIndex.value-1) + input.value.slice(cursorIndex.value);
-  cursorIndex.value--;
+
+  let characterLength = inputArray.value[inputArrayIndex.value-1].length;
+  
+  inputArray.value.splice(inputArrayIndex.value-1, 1);
+  input.value = inputArray.value.join("");
+  inputArrayIndex.value--;
+  cursorIndex.value -= characterLength;
+
   setTimeout(() => {
       placeCursor();
     },
@@ -166,6 +184,7 @@ let deleteTimeID: timeIntervalHelper, deleteIntervalID: timeIntervalHelper;
 watch(() => controller.value?.buttons.x.pressed, (pressed) => {
   if (pressed) {
     deleteCharacter();
+
     deleteTimeID = setTimeout(() => {
       if (controller.value?.buttons.x.pressed) {
         deleteIntervalID = setInterval(deleteCharacter, multiSpeed);
