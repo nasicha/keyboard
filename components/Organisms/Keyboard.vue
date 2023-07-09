@@ -1,9 +1,10 @@
 <template>
-  <div class="w-full p-2 md:max-w-screen-md mx-auto overflow-hidden">
+  <div class="w-full px-2 md:max-w-screen-md mx-auto overflow-hidden">
+    <span v-html="dummy" class="w-full h-auto p-2 resize-none" disabled/>
     <textarea 
       v-model="input" 
       ref="inputField"
-      @click="setCursor"
+      @click="placeCursor"
       class="w-full min-h-[4rem] p-2 border rounded-md border-base resize-none mb-4"  
       autofocus
     />
@@ -47,7 +48,7 @@ const inputArray = ref<string[]>([]);
 const inputField = ref<HTMLTextAreaElement | null>(null);
 
 // dummy input data
-input.value = "Lorem ipsum dolor sit amet";
+const dummy = "Lorem ipsum dolor sit amet";
 inputArray.value = input.value.split("");
 
 // controller
@@ -72,11 +73,6 @@ const inputArrayIndex = ref(inputArray.value.length);
 
 const placeCursor = () => {
   inputField.value?.setSelectionRange(cursorIndex.value, cursorIndex.value);
-};
-
-const setCursor = () => {
-  inputArrayIndex.value = inputField.value?.selectionStart ? inputField.value?.selectionStart : cursorIndex.value;
-  cursorIndex.value = inputArrayIndex.value;
 };
 
 const incrementCursor = () => {
