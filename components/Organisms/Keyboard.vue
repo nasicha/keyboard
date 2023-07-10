@@ -4,7 +4,7 @@
     <textarea 
       v-model="input" 
       ref="inputField"
-      @click="placeCursor"
+      @click="setCursor"
       class="w-full min-h-[4rem] p-2 border rounded-md border-base resize-none mb-4"  
       autofocus
     />
@@ -74,6 +74,17 @@ const inputArrayIndex = ref(inputArray.value.length);
 const placeCursor = () => {
   inputField.value?.setSelectionRange(cursorIndex.value, cursorIndex.value);
 };
+
+const setCursor = () => {
+  let sum = 0;
+  const lastIndex = inputArray.value.map((str, index) => {
+    sum += str.length;
+    return { index, sum };
+  }).findLastIndex(obj => obj.sum <= inputField.value?.selectionStart || 0);
+
+  inputArrayIndex.value = lastIndex+1;
+  cursorIndex.value = inputField.value?.selectionStart || 0;
+}
 
 const incrementCursor = () => {
   if(inputArrayIndex.value < inputArray.value.length) {
