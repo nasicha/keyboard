@@ -1,18 +1,24 @@
+import { character } from './../types/character';
 import characterData from './characterData';
+import characterGroupsQWERTY from './data/default/dataQwertyLike';
+import characterGroupsAlphabetical from './data/default/dataAlphabetical';
+import characterGroupsSymbol from './data/symbol/dataSymbol';
+import characterGroupsEmoji from './data/emoji/dataEmoji';
 
 export const useCharacterData = (shiftCharacters?: boolean, byAlphabet?: boolean, layoutState?: number) => {
     let selectedData;
 
+
     if (byAlphabet) {
-        selectedData = characterData.characterGroupsAlphabetical;
+        selectedData = characterGroupsAlphabetical.groups;
     } else {
-        selectedData = characterData.characterGroupsQWERTY;
+        selectedData = characterGroupsQWERTY.groups;
     }
 
     if(layoutState === 1) {
-        selectedData = characterData.characterGroupsSymbols;
+        selectedData = characterGroupsSymbol.groups;
     } else if (layoutState === 2) {
-        selectedData = characterData.characterGroupsEmoji;
+        selectedData = characterGroupsEmoji.groups;
     }
 
     return {

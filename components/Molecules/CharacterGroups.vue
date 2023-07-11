@@ -19,6 +19,7 @@
       <CharacterGroup
         :key="update"
         :group="group"
+        :inputCharacterPosition="animateCharacterPosition"
         :active="Number(group.key) === charGroup"
       />
       <div
@@ -136,36 +137,50 @@ watch(
 /*
  * left stick logic
  */
+const stickLeft = reactive<{ x: number; y: number }>({ x: 0, y: 0 });
 const charGroup = ref(0);
 
 const characterGroupPosition = (x: number, y: number) => {
   charGroup.value = useLeftStick(x, y);
 };
 
-watch(
-  () => controller.value?.stick.left,
+watch(() => controller.value?.stick.left,
   (left) => {
-    let x = left?.horizontal ? left?.horizontal : 0;
-    let y = left?.vertical ? left?.vertical : 0;
-    characterGroupPosition(x, y);
+    if(stickLeft.x === left?.horizontal || stickLeft.y === left?.vertical) return;
+
+    stickLeft.x = left?.horizontal ? left?.horizontal : 0;
+    stickLeft.y = left?.vertical ? left?.vertical : 0;
+    characterGroupPosition(stickLeft.x, stickLeft.y);
   }
 );
 
 /*
  * right stick logic
  */
-const inputCharacter = ref();
+const stickRight = reactive<{ x: number; y: number }>({ x: 0, y: 0 });
+const inputCharacter = ref(0);
+const animateCharacterPosition = ref(0);
 
 const setInputCharacter = (x: number, y: number) => {
   inputCharacter.value = useRightStick(x, y, charGroup.value);
+  if(inputCharacter.value === 0 && animateCharacterPosition.value !== 0) {
+    setTimeout(() => {
+      if(inputCharacter.value === 0 && animateCharacterPosition.value !== 0) animateCharacterPosition.value = 0;
+    }, 150);
+  } else {
+
+  animateCharacterPosition.value = inputCharacter.value;
+  } 
+
 };
 
-watch(
-  () => controller.value?.stick.right,
+watch(() => controller.value?.stick.right,
   (right) => {
-    let x = right?.horizontal ? right?.horizontal : 0;
-    let y = right?.vertical ? right?.vertical : 0;
-    setInputCharacter(x, y);
+    if(stickRight.x === right?.horizontal || stickRight.y === right?.vertical) return;
+
+    stickRight.x = right?.horizontal ? right?.horizontal : 0;
+    stickRight.y = right?.vertical ? right?.vertical : 0;
+    setInputCharacter(stickRight.x, stickRight.y);
   }
 );
 
@@ -181,11 +196,11 @@ watch(inputCharacter, (position) => {
     character = characters.shiftedCharacter;
 
     shiftState.value = 0;
+  updateCharacterData();
   } else if (shiftState.value === 2) {
     character = characters.shiftedCharacter;
   }
 
-  updateCharacterData();
   emits("inputCharacter", character);
 });
 
@@ -265,7 +280,7 @@ watch(
   }
 
   &-bottom {
-    @apply -mt-14;
+    @apply -mt-16;
 
     &-mid {
       @apply flex flex-row justify-center -mt-2 text-xl;
