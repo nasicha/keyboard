@@ -265,7 +265,7 @@ watch(
   }
 
   &-bottom {
-    @apply -mt-14;
+    @apply -mt-16;
 
     &-mid {
       @apply flex flex-row justify-center -mt-2 text-xl;

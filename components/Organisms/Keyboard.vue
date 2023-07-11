@@ -1,29 +1,24 @@
 <template>
-  <div class="w-full px-2 md:max-w-screen-md mx-auto overflow-hidden">
-    <span v-html="dummy" class="w-full h-auto p-2 resize-none" disabled/>
-    <textarea 
-      v-model="input" 
-      ref="inputField"
-      @click="setCursor"
-      class="w-full min-h-[4rem] p-2 border rounded-md border-base resize-none mb-4"  
-      autofocus
-    />
+  <span v-html="dummy" class="w-full h-auto p-2 resize-none" disabled/>
+  <textarea 
+    v-model="input" 
+    ref="inputField"
+    @click="setCursor"
+    class="w-full min-h-[4rem] p-2 border rounded-md border-base resize-none mb-4"  
+    autofocus
+  />
 
-    <div class="w-full flex flex-col">
-      <CharacterGroups 
-        :gamepad="gamepad"
-        :animate="animate"
-        ref="characterGroup"
-        @inputCharacter="addCharacter"
-        />
-    </div>
-    
-    <GamepadInfo v-if="hideGamepadInfo" :gamepad="gamepad" />
+  <div class="w-full flex flex-col">
+    <CharacterGroups 
+      :gamepad="props.gamepad"
+      :animate="animate"
+      ref="characterGroup"
+      @inputCharacter="addCharacter"
+      />
   </div>
 </template>
 
-<script setup lang="ts">
-import GamepadInfo from "@/components/Molecules/GamepadInfo.vue";
+<script setup lang="ts">  
 import CharacterGroups from "@/components/Molecules/CharacterGroups.vue";
 import { timeIntervalHelper } from "@/types/timeIntervalHelper";
 import { mapGamepadToXbox360Controller } from "@vueuse/core";
@@ -31,16 +26,16 @@ import { toRefs } from "vue";
 
 const props = defineProps<{ gamepad: Gamepad; showGamepad?: Boolean }>();
 
-// info & time variables
-const hideGamepadInfo = ref(false);
+// time & animation variables
+const multiDelay = 600;
+const multiSpeed = 100;
+
 const animate = reactive<{ [key: string]: boolean }>({
   animateDelete: false,
   animateCursorRight: false,
   animateCursorLeft: false,
 });
 
-const multiDelay = 600;
-const multiSpeed = 100;
 
 // input
 const input = ref("");
@@ -80,7 +75,7 @@ const setCursor = () => {
   const lastIndex = inputArray.value.map((str, index) => {
     sum += str.length;
     return { index, sum };
-  }).findLastIndex(obj => obj.sum <= inputField.value?.selectionStart || 0);
+  }).findLastIndex(obj => obj.sum <= inputField.value!.selectionStart || 0);
 
   inputArrayIndex.value = lastIndex+1;
   cursorIndex.value = inputField.value?.selectionStart || 0;
