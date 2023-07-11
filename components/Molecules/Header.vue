@@ -2,7 +2,6 @@
   <div class="nav">
     <NuxtLink to="/">Home</NuxtLink>
     <NuxtLink to="/demo">Demo</NuxtLink>
-    <NuxtLink to="/testground">testground</NuxtLink>
   </div>
 </template>
 <style lang="scss">
