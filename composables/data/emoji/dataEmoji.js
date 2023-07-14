@@ -49,7 +49,7 @@ export default {
 			key: "5",
 			characters: [
 				{ key: 1, value: "🎮", valueShift: "🛹" },
-				{ key: 2, value: "🏀", valueShift: "⚽" },
+				{ key: 2, value: "🌸", valueShift: "⚽" },
 				{ key: 3, value: "📷", valueShift: "🎨" },
 				{ key: 4, value: "🎧", valueShift: "🎸" },
 			],
