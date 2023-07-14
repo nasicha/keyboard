@@ -21,6 +21,7 @@
         :group="group"
         :inputCharacterPosition="animateCharacterPosition"
         :active="Number(group.key) === charGroup"
+        :shiftState="shiftState"
       />
       <div
         class="cross"
@@ -109,15 +110,6 @@ const getShiftState = () => {
   return shiftState.value === 0 ? false : true;
 };
 
-const updateCharacterData = () => {
-  charGroups.value = useCharacterData(
-    getShiftState(),
-    useAlphabetic.value,
-    layoutState.value
-  ).characterGroups;
-  update.value++;
-};
-
 watch(
   () => controller.value?.stick.left.button.pressed,
   (pressed) => {
@@ -128,8 +120,6 @@ watch(
       } else {
         shiftSymbol.value = "⇧";
       }
-
-      updateCharacterData();
     }
   }
 );
@@ -163,6 +153,7 @@ const animateCharacterPosition = ref(0);
 
 const setInputCharacter = (x: number, y: number) => {
   inputCharacter.value = useRightStick(x, y, charGroup.value);
+
   if(inputCharacter.value === 0 && animateCharacterPosition.value !== 0) {
     setTimeout(() => {
       if(inputCharacter.value === 0 && animateCharacterPosition.value !== 0) animateCharacterPosition.value = 0;
@@ -194,9 +185,10 @@ watch(inputCharacter, (position) => {
 
   if (shiftState.value === 1) {
     character = characters.shiftedCharacter;
+    setTimeout(() => {
+      shiftState.value = 0;
+    }, 150);
 
-    shiftState.value = 0;
-  updateCharacterData();
   } else if (shiftState.value === 2) {
     character = characters.shiftedCharacter;
   }
@@ -226,6 +218,15 @@ watch(
  */
 const layoutSymbol = useCharacterDataLayout();
 const animateLayout = ref(false);
+
+const updateCharacterData = () => {
+  charGroups.value = useCharacterData(
+    getShiftState(),
+    useAlphabetic.value,
+    layoutState.value
+  ).characterGroups;
+  update.value++;
+};
 
 watch(
   () => controller.value?.triggers.left.pressed,

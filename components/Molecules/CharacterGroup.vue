@@ -6,7 +6,7 @@
       :class="{ active: active }"
       class="rounded-full text-center leading-[1rem] sm:leading-[3.5rem] md:leading-[5.25rem]"
     >
-      <Character :character="character.character" :class="{'text-base': toggleDirection === character.position}"          
+      <Character :character="shiftState === 0 ? character.character : character.shiftedCharacter" :class="{'text-base': toggleDirection === character.position}"          
          />
       <div :class="{
         'characterBg': true,
@@ -21,7 +21,7 @@
 import Character from "@/components/Atoms/Character.vue";
 import { characterGroup } from "@/types/characterGroup";
 
-const props = defineProps<{ group: characterGroup, inputCharacterPosition: number, active?: Boolean}>();
+const props = defineProps<{ group: characterGroup, inputCharacterPosition: number, shiftState: number, active?: Boolean}>();
 
 const toggleDirection = ref(0);
 
