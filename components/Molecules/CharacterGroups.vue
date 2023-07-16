@@ -150,17 +150,26 @@ watch(() => controller.value?.stick.left,
 const stickRight = reactive<{ x: number; y: number }>({ x: 0, y: 0 });
 const inputCharacter = ref(0);
 const animateCharacterPosition = ref(0);
+const activeCharGroup = ref(0);
 
 const setInputCharacter = (x: number, y: number) => {
+  if(activeCharGroup.value !== charGroup.value) {
+    animateCharacterPosition.value = 0;
+  }
+
   inputCharacter.value = useRightStick(x, y, charGroup.value);
 
   if(inputCharacter.value === 0 && animateCharacterPosition.value !== 0) {
     setTimeout(() => {
-      if(inputCharacter.value === 0 && animateCharacterPosition.value !== 0) animateCharacterPosition.value = 0;
-    }, 150);
+      if(inputCharacter.value === 0 && animateCharacterPosition.value !== 0){
+        animateCharacterPosition.value = 0;
+      } else {
+        animateCharacterPosition.value = inputCharacter.value;
+      }
+    }, 100);
   } else {
-
-  animateCharacterPosition.value = inputCharacter.value;
+    activeCharGroup.value = charGroup.value;
+    animateCharacterPosition.value = inputCharacter.value;
   } 
 
 };
