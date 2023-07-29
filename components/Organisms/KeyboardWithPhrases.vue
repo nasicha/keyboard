@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col">
-    <span v-html="phrase" class="w-full h-auto px-2 pb-2 resize-none" :class="pressedStart ? 'text-secondary' : 'color-base'" disabled/>
+    <span v-html="phrase" class="w-full h-auto px-2 pb-2 resize-none" disabled/>
     <input 
       v-model="input" 
       ref="inputField"
-      @keyup.enter="toggleStart"
+      @keyup.enter="nextPhrase"
       @click="setCursor"
       class="w-full p-2 border rounded-md border-base resize-none mb-4"  
       autofocus
@@ -205,15 +205,19 @@ watch(() => controller.value?.buttons.x.pressed, (pressed) => {
   }
 });
 
-const pressedStart = ref(false);
+const phrasesIndex = ref(0);
 
-const toggleStart = () => {
-  pressedStart.value = !pressedStart.value;
+const nextPhrase = () => {
+  if(props.phrases.length <= 1) return;
+  phrasesIndex.value = (phrasesIndex.value + 1) % props.phrases.length;
+  phrase.value = props.phrases[phrasesIndex.value];
+  console.log(phrase.value)
+  
 }
 
 watch(() => controller.value?.start.touched, (touched) => {
   if(touched) {
-    toggleStart();
+    nextPhrase();
   }
 });
 </script>
