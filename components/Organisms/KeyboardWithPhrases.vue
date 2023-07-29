@@ -1,10 +1,16 @@
 <template>
   <div class="flex flex-col">
-    <span v-html="phrase" class="w-full h-auto px-2 pb-2 resize-none" disabled/>
+  <div class="w-full h-auto px-2 pb-2 flex justify-between">
+    <span v-html="phrase" class="resize-none" disabled/>
+    <div class="flex items-center gap-2">
+      <span v-if="props.phrases.length > 1" class=" text-background">{{ phrasesIndex+1 }}/{{ props.phrases.length }}</span>
+      <IconStart class="h-6 w-6" />
+    </div>
+  </div>
     <input 
       v-model="input" 
       ref="inputField"
-      @keyup.enter="nextPhrase"
+      @keyup.enter="submitPhrase"
       @click="setCursor"
       class="w-full p-2 border rounded-md border-base resize-none mb-4"  
       autofocus
@@ -23,6 +29,7 @@
 
 <script setup lang="ts">  
 import Keyboard from "@/components/Molecules/Keyboard.vue";
+import IconStart from "@/assets/icons/xbox_button_start.svg?component";
 import { timeIntervalHelper } from "@/types/timeIntervalHelper";
 import { mapGamepadToXbox360Controller } from "@vueuse/core";
 import { toRefs } from "vue";
@@ -211,13 +218,15 @@ const nextPhrase = () => {
   if(props.phrases.length <= 1) return;
   phrasesIndex.value = (phrasesIndex.value + 1) % props.phrases.length;
   phrase.value = props.phrases[phrasesIndex.value];
-  console.log(phrase.value)
-  
+}
+
+const submitPhrase = () => {
+  nextPhrase();
 }
 
 watch(() => controller.value?.start.touched, (touched) => {
   if(touched) {
-    nextPhrase();
+    submitPhrase();
   }
 });
 </script>

@@ -1,5 +1,5 @@
-import { character } from './../types/character';
-import characterData from './characterData';
+import characterData from './data/characterData';
+import phrases from './data/phrases';
 import characterGroupsQWERTY from './data/default/dataQwertyLike';
 import characterGroupsSymbol from './data/symbol/dataSymbol';
 import characterGroupsEmoji from './data/emoji/dataEmoji';
@@ -34,4 +34,8 @@ export const useCharacterDataLayout = () => {
     return {
         ...characterData.layouts,
     }
+}
+
+export const usePhrases = () => {
+    return phrases.phrases;
 }
