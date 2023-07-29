@@ -36,7 +36,7 @@
   </div>
   <div class="info info-bottom">
     <div class="info-wrapper" :class="shiftState === 0 ? '' : 'info-wrapper-selected'">
-      <span class="info-text">{{ shiftSymbol }}</span>
+      <span class="info-text info-text-shift">{{ shiftSymbol }}</span>
       <IconClickL class="info-icon" />
     </div>
     <div class="info-wrapper" :class="{ animatePress: props.animate.animateDelete }">
@@ -268,7 +268,7 @@ watch(
   &-wrapper {
     @apply flex flex-col w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 border-2 border-background text-xl rounded-full p-1 justify-evenly items-center shadow-md text-center;
 
-    & span {
+    & .info-text {
       @apply text-base sm:text-xl md:text-3xl;
     }
 
@@ -280,6 +280,9 @@ watch(
       @apply bg-base border-base text-secondary shadow-lg;
       & svg {
         @apply invert;
+      }
+      & .info-text-shift {
+        @apply text-secondary;
       }
     }
   }

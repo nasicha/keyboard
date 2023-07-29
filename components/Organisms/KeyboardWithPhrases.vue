@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col">
-    <span v-html="phrase" class="inline w-full h-auto px-2 pb-2 resize-none" disabled/>
+    <span v-html="phrase" class="w-full h-auto px-2 pb-2 resize-none" :class="pressedStart ? 'text-secondary' : 'color-base'" disabled/>
     <input 
       v-model="input" 
       ref="inputField"
@@ -186,7 +186,7 @@ const deleteCharacter = () => {
 let deleteTimeID: timeIntervalHelper, deleteIntervalID: timeIntervalHelper;
 
 watch(() => controller.value?.buttons.x.pressed, (pressed) => {
-  if (pressed && inputArrayIndex.value > 0) {
+  if (pressed) {
     deleteCharacter();
 
     deleteTimeID = setTimeout(() => {
@@ -201,6 +201,14 @@ watch(() => controller.value?.buttons.x.pressed, (pressed) => {
     animate.animateDelete = false;
     clearTimeout(deleteTimeID);
     clearInterval(deleteIntervalID);
+  }
+});
+
+const pressedStart = ref(false);
+
+watch(() => controller.value?.start.touched, (touched) => {
+  if(touched) {
+    pressedStart.value = !pressedStart.value;
   }
 });
 </script>
