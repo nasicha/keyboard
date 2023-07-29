@@ -4,7 +4,7 @@
       to="/"
       class="flex justify-center items-center gap-2"
     >
-      <HanaDSLogo class="w-6 h-6" />
+      <HanaDSLogo class="w-8 h-8" />
       <span>Hana DS</span>
     </NuxtLink>
     <NuxtLink to="/pangram">Pangram</NuxtLink>
@@ -13,7 +13,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import HanaDSLogo from "@/assets/icons/hana_ds-logo.svg?component";
+import HanaDSLogo from "@/assets/icons/hana_ds-logo-bg.svg?component";
 </script>
 <style lang="scss" scoped>
 .nav {

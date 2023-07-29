@@ -62,7 +62,7 @@
     
     &::before {
       background: #fff;
-      transition: transform 100ms cubic-bezier(0,0.6,0.7,1.2);
+      transition: all 100ms cubic-bezier(0,0.6,0.7,1.2);
     }
   }
 }

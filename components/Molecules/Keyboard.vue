@@ -71,23 +71,16 @@ const props = defineProps<{ gamepad: Gamepad; animate: { [key: string]: boolean 
 
 const update = ref(0);
 const layoutState = ref(0);
-const useAlphabetic = ref(localStorage.getItem("alphabetical") === "true");
 
 /*
  * update character data
  */
 const { characterGroups } = useCharacterData(
   false,
-  useAlphabetic.value,
   layoutState.value
 );
 const charGroups = ref(characterGroups);
 
-onMounted(() => {
-  if (localStorage.getItem("alphabetical")) {
-    useAlphabetic.value = localStorage.getItem("alphabetical") === "true";
-  }
-});
 
 /*
  * controller
@@ -226,7 +219,6 @@ const animateLayout = ref(false);
 const updateCharacterData = () => {
   charGroups.value = useCharacterData(
     getShiftState(),
-    useAlphabetic.value,
     layoutState.value
   ).characterGroups;
   update.value++;
@@ -242,25 +234,6 @@ watch(
       animateLayout.value = true;
     } else {
       animateLayout.value = false;
-    }
-  }
-);
-
-/*
- * toggle character (dpad up)
- */
-const toggleCharacterData = () => {
-  useAlphabetic.value = !useAlphabetic.value;
-  localStorage.setItem("alphabetical", useAlphabetic.value.toString());
-
-  updateCharacterData();
-};
-
-watch(
-  () => controller.value?.dpad.up.pressed,
-  (pressed) => {
-    if (pressed) {
-      toggleCharacterData();
     }
   }
 );
