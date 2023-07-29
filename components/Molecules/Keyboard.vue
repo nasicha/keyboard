@@ -49,10 +49,6 @@
       <span class="info-text">{{ '<' }}</span>
       <IconLB class="info-icon" />
     </div>
-    <div class="info-wrapper info-wrapper-mid">
-      <span class="info-text-mid">{{ useAlphabetic ? "QWERTY" : "Alpha" }}</span>
-      <IconUp class="info-icon" />
-    </div>
     <div class="info-wrapper" :class="{ animatePress: props.animate.animateCursorRight }">
       <span class="info-text">{{ '>' }}</span>
       <IconRB class="info-icon" />
@@ -69,7 +65,6 @@ import IconRB from "@/assets/icons/xbox_bumper_rb.svg?component";
 import IconLT from "@/assets/icons/xbox_trigger_lt.svg?component";
 import IconLB from "@/assets/icons/xbox_bumper_lb.svg?component";
 import IconClickL from "@/assets/icons/xbox_click_l.svg?component";
-import IconUp from "@/assets/icons/xbox_dpad_up.svg?component";
 import IconX from "@/assets/icons/xbox_button_x.svg?component";
 
 const props = defineProps<{ gamepad: Gamepad; animate: { [key: string]: boolean } }>();
@@ -286,14 +281,14 @@ watch(
   @apply min-w-[330px] sm:min-w-[560px] md:min-w-[740px] flex flex-row sm:px-8 justify-between -z-10 self-center;
 
   &-top {
-    @apply -mb-14;
+    @apply -mb-16;
   }
 
   &-bottom {
-    @apply -mt-16;
+    @apply -mt-14 md:-mt-20;
 
     &-mid {
-      @apply flex flex-row justify-center -mt-2 text-xl;
+      @apply flex flex-row justify-center -mt-4 md:-mt-6 gap-10 sm:gap-16 md:gap-24 text-xl;
     }
   }
 
@@ -309,10 +304,6 @@ watch(
       & svg {
         @apply invert;
       }
-    }
-
-    &-mid {
-      @apply m-4;
     }
   }
 

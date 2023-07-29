@@ -1,15 +1,17 @@
 <template>
-  <span v-html="dummy" class="w-full h-auto p-2 resize-none" disabled/>
-  <textarea 
-    v-model="input" 
-    ref="inputField"
-    @click="setCursor"
-    class="w-full min-h-[4rem] p-2 border rounded-md border-base resize-none mb-4"  
-    autofocus
-  />
+  <div class="flex flex-col">
+    <span v-html="phrase" class="inline w-full h-auto px-2 pb-2 resize-none" disabled/>
+    <input 
+      v-model="input" 
+      ref="inputField"
+      @click="setCursor"
+      class="w-full p-2 border rounded-md border-base resize-none mb-4"  
+      autofocus
+    />
+  </div>
 
   <div class="w-full flex flex-col">
-    <CharacterGroups 
+    <Keyboard 
       :gamepad="props.gamepad"
       :animate="animate"
       ref="characterGroup"
@@ -19,12 +21,12 @@
 </template>
 
 <script setup lang="ts">  
-import CharacterGroups from "@/components/Molecules/CharacterGroups.vue";
+import Keyboard from "@/components/Molecules/Keyboard.vue";
 import { timeIntervalHelper } from "@/types/timeIntervalHelper";
 import { mapGamepadToXbox360Controller } from "@vueuse/core";
 import { toRefs } from "vue";
 
-const props = defineProps<{ gamepad: Gamepad; showGamepad?: Boolean }>();
+const props = defineProps<{ gamepad: Gamepad; phrases: string[]; showGamepad?: Boolean }>();
 
 // time & animation variables
 const multiDelay = 600;
@@ -44,21 +46,14 @@ const inputField = ref<HTMLTextAreaElement | null>(null);
 
 // dummy input data
 const dummy = "Lorem ipsum dolor sit amet";
+const phrase = ref(dummy);
+phrase.value = props.phrases[0] || dummy;
+
 inputArray.value = input.value.split("");
 
 // controller
 const { gamepad } = toRefs(props);
 const controller = mapGamepadToXbox360Controller(gamepad);
-
-/*
-* textarea
-*/
-function updateTextareaHeight() {
-  if(inputField.value === null) return;
-
-  inputField.value.style.height = '';
-  inputField.value.style.height = `${inputField.value.scrollHeight + 3}px`;
-}
 
 /*
 * cursor
@@ -155,7 +150,6 @@ const addCharacter = (character: string) => {
   cursorIndex.value += character.length;
 
   setTimeout(() => {
-    updateTextareaHeight();
     placeCursor();
   }, 0);
 };
@@ -188,7 +182,7 @@ const deleteCharacter = () => {
 let deleteTimeID: timeIntervalHelper, deleteIntervalID: timeIntervalHelper;
 
 watch(() => controller.value?.buttons.x.pressed, (pressed) => {
-  if (pressed) {
+  if (pressed && inputArrayIndex.value > 0) {
     deleteCharacter();
 
     deleteTimeID = setTimeout(() => {
