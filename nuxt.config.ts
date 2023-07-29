@@ -2,19 +2,20 @@ import svgLoader from 'vite-svg-loader';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  css: ['~/assets/scss/main.scss'],
+  css: ['@/assets/scss/main.scss'],
   modules: ['@nuxtjs/tailwindcss'],
   tailwindcss: {
-    cssPath: '~/assets/css/main.css',
+    cssPath: '@/assets/css/main.scss',
     configPath: './tailwind.config.js',
     exposeConfig: false,
     exposeLevel: 2,
     injectPosition: 'first',
     viewer: true,
   },
+  
   vite: {
     plugins: [svgLoader()],
-  },        
+  },
   app: {  
     head: {
       link: [

@@ -36,7 +36,7 @@
   </div>
   <div class="info info-bottom">
     <div class="info-wrapper" :class="shiftState === 0 ? '' : 'info-wrapper-selected'">
-      <span class="info-text">{{ shiftSymbol }}</span>
+      <span class="info-text info-text-shift">{{ shiftSymbol }}</span>
       <IconClickL class="info-icon" />
     </div>
     <div class="info-wrapper" :class="{ animatePress: props.animate.animateDelete }">
@@ -48,10 +48,6 @@
     <div class="info-wrapper" :class="{ animatePress: props.animate.animateCursorLeft }">
       <span class="info-text">{{ '<' }}</span>
       <IconLB class="info-icon" />
-    </div>
-    <div class="info-wrapper info-wrapper-mid">
-      <span class="info-text-mid">{{ useAlphabetic ? "QWERTY" : "Alpha" }}</span>
-      <IconUp class="info-icon" />
     </div>
     <div class="info-wrapper" :class="{ animatePress: props.animate.animateCursorRight }">
       <span class="info-text">{{ '>' }}</span>
@@ -69,30 +65,22 @@ import IconRB from "@/assets/icons/xbox_bumper_rb.svg?component";
 import IconLT from "@/assets/icons/xbox_trigger_lt.svg?component";
 import IconLB from "@/assets/icons/xbox_bumper_lb.svg?component";
 import IconClickL from "@/assets/icons/xbox_click_l.svg?component";
-import IconUp from "@/assets/icons/xbox_dpad_up.svg?component";
 import IconX from "@/assets/icons/xbox_button_x.svg?component";
 
 const props = defineProps<{ gamepad: Gamepad; animate: { [key: string]: boolean } }>();
 
 const update = ref(0);
 const layoutState = ref(0);
-const useAlphabetic = ref(localStorage.getItem("alphabetical") === "true");
 
 /*
  * update character data
  */
 const { characterGroups } = useCharacterData(
   false,
-  useAlphabetic.value,
   layoutState.value
 );
 const charGroups = ref(characterGroups);
 
-onMounted(() => {
-  if (localStorage.getItem("alphabetical")) {
-    useAlphabetic.value = localStorage.getItem("alphabetical") === "true";
-  }
-});
 
 /*
  * controller
@@ -231,7 +219,6 @@ const animateLayout = ref(false);
 const updateCharacterData = () => {
   charGroups.value = useCharacterData(
     getShiftState(),
-    useAlphabetic.value,
     layoutState.value
   ).characterGroups;
   update.value++;
@@ -247,25 +234,6 @@ watch(
       animateLayout.value = true;
     } else {
       animateLayout.value = false;
-    }
-  }
-);
-
-/*
- * toggle character (dpad up)
- */
-const toggleCharacterData = () => {
-  useAlphabetic.value = !useAlphabetic.value;
-  localStorage.setItem("alphabetical", useAlphabetic.value.toString());
-
-  updateCharacterData();
-};
-
-watch(
-  () => controller.value?.dpad.up.pressed,
-  (pressed) => {
-    if (pressed) {
-      toggleCharacterData();
     }
   }
 );
@@ -286,33 +254,36 @@ watch(
   @apply min-w-[330px] sm:min-w-[560px] md:min-w-[740px] flex flex-row sm:px-8 justify-between -z-10 self-center;
 
   &-top {
-    @apply -mb-14;
+    @apply -mb-16;
   }
 
   &-bottom {
-    @apply -mt-16;
+    @apply -mt-14 md:-mt-20;
 
     &-mid {
-      @apply flex flex-row justify-center -mt-2 text-xl;
+      @apply flex flex-row justify-center -mt-4 md:-mt-6 gap-10 sm:gap-16 md:gap-24 text-xl;
     }
   }
 
   &-wrapper {
     @apply flex flex-col w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 border-2 border-background text-xl rounded-full p-1 justify-evenly items-center shadow-md text-center;
 
+    & .info-text {
+      @apply text-base sm:text-xl md:text-3xl;
+    }
+
     & svg {
-        @apply opacity-70;
-      }
+      @apply fill-icon;
+    }
 
     &-selected {
       @apply bg-base border-base text-secondary shadow-lg;
       & svg {
         @apply invert;
       }
-    }
-
-    &-mid {
-      @apply m-4;
+      & .info-text-shift {
+        @apply text-secondary;
+      }
     }
   }
 

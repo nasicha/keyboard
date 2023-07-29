@@ -1,5 +1,4 @@
 <template>
-  <span v-html="dummy" class="w-full h-auto p-2 resize-none" disabled/>
   <textarea 
     v-model="input" 
     ref="inputField"
@@ -9,7 +8,7 @@
   />
 
   <div class="w-full flex flex-col">
-    <CharacterGroups 
+    <Keyboard 
       :gamepad="props.gamepad"
       :animate="animate"
       ref="characterGroup"
@@ -19,7 +18,7 @@
 </template>
 
 <script setup lang="ts">  
-import CharacterGroups from "@/components/Molecules/CharacterGroups.vue";
+import Keyboard from "@/components/Molecules/Keyboard.vue";
 import { timeIntervalHelper } from "@/types/timeIntervalHelper";
 import { mapGamepadToXbox360Controller } from "@vueuse/core";
 import { toRefs } from "vue";
@@ -100,9 +99,11 @@ const decrementCursor = () => {
 let cursorLeftTimeID: timeIntervalHelper, cursorLeftIntervalID: timeIntervalHelper;
 
 watch(() => controller.value?.bumper.left.pressed, (pressed) => {
-  if (pressed && inputArrayIndex.value > 0) {
-      decrementCursor();
+  if (pressed) {
       animate.animateCursorLeft = true;
+
+      if(inputArrayIndex.value == 0) return;
+      decrementCursor();
 
     cursorLeftTimeID = setTimeout(() => {
       if (controller.value?.bumper.left.pressed && inputArrayIndex.value > 0 && cursorLeftIntervalID === undefined) {
@@ -124,9 +125,11 @@ watch(() => controller.value?.bumper.left.pressed, (pressed) => {
 let cursorRightTimeID: timeIntervalHelper, cursorRightIntervalID: timeIntervalHelper;
 
 watch(() => controller.value?.bumper.right.pressed, (pressed) => {
-  if (pressed && inputArrayIndex.value < inputArray.value.length) {
-    incrementCursor();
+  if (pressed) {
     animate.animateCursorRight = true;
+
+    if(inputArrayIndex.value == inputArray.value.length) return;
+    incrementCursor();
 
     cursorRightTimeID = setTimeout(() => {
       if (controller.value?.bumper.right.pressed && inputArrayIndex.value < inputArray.value.length && cursorRightIntervalID === undefined) {

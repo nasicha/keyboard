@@ -6,10 +6,11 @@
     <Alert :notSupportedAlert="false" />
   </div>
   <div v-else>
-    <KeyboardSandbox
+    <KeyboardWithPhrases
       v-for="gamepad in gamepads"
       :key="gamepad.id"
       :gamepad="gamepad"
+      :phrases="phrases"
     />
   </div>
   <Infotable v-if="!isSupported || gamepads.length === 0" />
@@ -17,10 +18,12 @@
 
 <script setup lang="ts">
 import { useGamepad } from "@vueuse/core";
-import KeyboardSandbox from "~/components/Organisms/KeyboardSandbox.vue";
+import KeyboardWithPhrases from "~/components/Organisms/KeyboardWithPhrases.vue";
 import Infotable from "~/components/Molecules/Infotable.vue";
 import Alert from "~/components/Molecules/Alert.vue";
 const { isSupported, gamepads } = useGamepad();
+
+const phrases = ref<string[]>([]);
 </script>
 <style lang="scss" scoped>
 @import "@/assets/scss/alerts.scss";
