@@ -17,7 +17,7 @@ import HanaDSLogo from "@/assets/icons/hana_ds-logo-bg.svg?component";
 </script>
 <style lang="scss" scoped>
 .nav {
-  @apply flex w-full bg-black p-2 items-center gap-2;
+  @apply flex w-full bg-base p-2 items-center gap-2;
 
   & a {
     @apply text-center text-secondary px-4 py-2 bg-base border border-secondary rounded-full;

@@ -12,9 +12,10 @@ export default defineNuxtConfig({
     injectPosition: 'first',
     viewer: true,
   },
+  
   vite: {
     plugins: [svgLoader()],
-  },        
+  },
   app: {  
     head: {
       link: [

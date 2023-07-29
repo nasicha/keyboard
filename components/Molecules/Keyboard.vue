@@ -268,9 +268,13 @@ watch(
   &-wrapper {
     @apply flex flex-col w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 border-2 border-background text-xl rounded-full p-1 justify-evenly items-center shadow-md text-center;
 
+    & span {
+      @apply text-base sm:text-xl md:text-3xl;
+    }
+
     & svg {
-        @apply opacity-70;
-      }
+      @apply fill-icon;
+    }
 
     &-selected {
       @apply bg-base border-base text-secondary shadow-lg;

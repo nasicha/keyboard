@@ -1,10 +1,17 @@
 
+@use "sass:color";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 $active-control-color: #000;
+$active-secondary-color: #fff;
+$active-icon-color: lighten($active-control-color, 20%);;
+$active-background-color: lighten($active-control-color, 57%);
 
 :root {
-  --vp-c-brand-active: #{$active-control-color};
+  --primary-color: #{$active-control-color};
+  --secondary-color: #{$active-secondary-color};
+  --background-color: #{$active-background-color};
+  --icon-color: #{$active-icon-color};
 }

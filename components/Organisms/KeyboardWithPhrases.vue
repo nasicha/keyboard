@@ -29,7 +29,7 @@ import { toRefs } from "vue";
 const props = defineProps<{ gamepad: Gamepad; phrases: string[]; showGamepad?: Boolean }>();
 
 // time & animation variables
-const multiDelay = 600;
+const multiDelay = 500;
 const multiSpeed = 100;
 
 const animate = reactive<{ [key: string]: boolean }>({
@@ -95,9 +95,11 @@ const decrementCursor = () => {
 let cursorLeftTimeID: timeIntervalHelper, cursorLeftIntervalID: timeIntervalHelper;
 
 watch(() => controller.value?.bumper.left.pressed, (pressed) => {
-  if (pressed && inputArrayIndex.value > 0) {
-      decrementCursor();
+  if (pressed) {
       animate.animateCursorLeft = true;
+
+      if(inputArrayIndex.value == 0) return;
+      decrementCursor();
 
     cursorLeftTimeID = setTimeout(() => {
       if (controller.value?.bumper.left.pressed && inputArrayIndex.value > 0 && cursorLeftIntervalID === undefined) {
@@ -119,9 +121,11 @@ watch(() => controller.value?.bumper.left.pressed, (pressed) => {
 let cursorRightTimeID: timeIntervalHelper, cursorRightIntervalID: timeIntervalHelper;
 
 watch(() => controller.value?.bumper.right.pressed, (pressed) => {
-  if (pressed && inputArrayIndex.value < inputArray.value.length) {
-    incrementCursor();
+  if (pressed) {
     animate.animateCursorRight = true;
+
+    if(inputArrayIndex.value == inputArray.value.length) return;
+    incrementCursor();
 
     cursorRightTimeID = setTimeout(() => {
       if (controller.value?.bumper.right.pressed && inputArrayIndex.value < inputArray.value.length && cursorRightIntervalID === undefined) {

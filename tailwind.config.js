@@ -18,9 +18,10 @@ module.exports = {
       'current': 'currentColor',
       'black': '#000000',
       'white': '#ffffff',
-      'base': '#000000',
-      'secondary': '#ffffff',
-      'background': '#6e6e6e',
+      'base': 'var(--primary-color)',
+      'secondary': 'var(--secondary-color)',
+      'background': 'var(--background-color)',
+      'icon': 'var(--icon-color)'
     },
     extend: {},
   },
