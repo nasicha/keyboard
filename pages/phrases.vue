@@ -25,7 +25,7 @@ const { isSupported, gamepads } = useGamepad();
 
 const phrases = ref<string[]>([]);
 
-phrases.value = ["test", "test 2", "test 3"];
+phrases.value = usePhrases();
 
 </script>
 <style lang="scss" scoped>

@@ -1,10 +1,13 @@
 <template>
   <div class="flex flex-col">
-    <span v-html="phrase" class="w-full h-auto px-2 pb-2 resize-none" disabled/>
+  <div class="w-full h-auto px-2 pb-2 flex justify-between">
+    <span v-html="phrase" class="resize-none" disabled/>
+    <span v-if="props.phrases.length > 1">{{ phrasesIndex+1 }}/{{ props.phrases.length }}</span>
+  </div>
     <input 
       v-model="input" 
       ref="inputField"
-      @keyup.enter="nextPhrase"
+      @keyup.enter="submitPhrase"
       @click="setCursor"
       class="w-full p-2 border rounded-md border-base resize-none mb-4"  
       autofocus
@@ -211,13 +214,15 @@ const nextPhrase = () => {
   if(props.phrases.length <= 1) return;
   phrasesIndex.value = (phrasesIndex.value + 1) % props.phrases.length;
   phrase.value = props.phrases[phrasesIndex.value];
-  console.log(phrase.value)
-  
+}
+
+const submitPhrase = () => {
+  nextPhrase();
 }
 
 watch(() => controller.value?.start.touched, (touched) => {
   if(touched) {
-    nextPhrase();
+    submitPhrase();
   }
 });
 </script>
