@@ -212,6 +212,10 @@ watch(() => controller.value?.buttons.x.pressed, (pressed) => {
   }
 });
 
+
+/*
+* phrase logic
+*/
 const phrasesIndex = ref(0);
 
 const nextPhrase = () => {
@@ -219,10 +223,17 @@ const nextPhrase = () => {
   phrase.value = props.phrases[phrasesIndex.value];
 }
 
+const cleanInput = () => {
+  input.value = "";
+  inputArray.value = [];
+  inputArrayIndex.value = 0;
+  cursorIndex.value = 0;
+}
+
 const submitPhrase = () => {
   if(props.phrases.length <= 1) return;
 
-  input.value = "";
+  cleanInput();
   nextPhrase();
 }
 
