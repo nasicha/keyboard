@@ -24,6 +24,9 @@ import Alert from "~/components/Molecules/Alert.vue";
 const { isSupported, gamepads } = useGamepad();
 
 const phrases = ref<string[]>([]);
+
+phrases.value = ["test", "test 2", "test 3"];
+
 </script>
 <style lang="scss" scoped>
 @import "@/assets/scss/alerts.scss";
