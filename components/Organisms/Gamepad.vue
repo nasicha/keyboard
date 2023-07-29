@@ -24,7 +24,6 @@
 
 <script setup lang="ts">
 import GamepadInfo from "@/components/Molecules/GamepadInfo.vue";
-import CharacterGroups from "@/components/Molecules/CharacterGroups.vue";
 import Controller from "@/components/Atoms/Controller.vue";
 
 defineProps<{ gamepad: Gamepad; showGamepad?: Boolean }>();
