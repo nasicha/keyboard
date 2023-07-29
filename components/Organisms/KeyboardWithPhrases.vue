@@ -4,6 +4,7 @@
     <input 
       v-model="input" 
       ref="inputField"
+      @keyup.enter="toggleStart"
       @click="setCursor"
       class="w-full p-2 border rounded-md border-base resize-none mb-4"  
       autofocus
@@ -206,9 +207,13 @@ watch(() => controller.value?.buttons.x.pressed, (pressed) => {
 
 const pressedStart = ref(false);
 
+const toggleStart = () => {
+  pressedStart.value = !pressedStart.value;
+}
+
 watch(() => controller.value?.start.touched, (touched) => {
   if(touched) {
-    pressedStart.value = !pressedStart.value;
+    toggleStart();
   }
 });
 </script>
