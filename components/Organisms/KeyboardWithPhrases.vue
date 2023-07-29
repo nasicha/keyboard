@@ -2,8 +2,8 @@
   <div class="flex flex-col">
   <div class="w-full h-auto px-2 pb-2 flex justify-between">
     <span v-html="phrase" class="resize-none" disabled/>
-    <div class="flex items-center gap-2">
-      <span v-if="props.phrases.length > 1" class=" text-background">{{ phrasesIndex+1 }}/{{ props.phrases.length }}</span>
+    <div v-if="props.phrases.length > 1" class="flex items-center gap-2">
+      <span class=" text-background">{{ phrasesIndex+1 }}/{{ props.phrases.length }}</span>
       <IconStart class="h-6 w-6" />
     </div>
   </div>
@@ -215,12 +215,14 @@ watch(() => controller.value?.buttons.x.pressed, (pressed) => {
 const phrasesIndex = ref(0);
 
 const nextPhrase = () => {
-  if(props.phrases.length <= 1) return;
   phrasesIndex.value = (phrasesIndex.value + 1) % props.phrases.length;
   phrase.value = props.phrases[phrasesIndex.value];
 }
 
 const submitPhrase = () => {
+  if(props.phrases.length <= 1) return;
+
+  input.value = "";
   nextPhrase();
 }
 
