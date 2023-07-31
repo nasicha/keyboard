@@ -23,7 +23,7 @@ import { timeIntervalHelper } from "@/types/timeIntervalHelper";
 import { mapGamepadToXbox360Controller } from "@vueuse/core";
 import { toRefs } from "vue";
 
-const props = defineProps<{ gamepad: Gamepad; showGamepad?: Boolean }>();
+const props = defineProps<{ gamepad: Gamepad; showGamepad?: boolean }>();
 
 // time & animation variables
 const multiDelay = 600;

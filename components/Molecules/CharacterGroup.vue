@@ -21,7 +21,7 @@
 import Character from "@/components/Atoms/Character.vue";
 import { characterGroup } from "@/types/characterGroup";
 
-const props = defineProps<{ group: characterGroup, inputCharacterPosition: number, shiftState: number, active?: Boolean}>();
+const props = defineProps<{ group: characterGroup, inputCharacterPosition: number, shiftState: number, active?: boolean}>();
 
 const toggleDirection = ref(0);
 

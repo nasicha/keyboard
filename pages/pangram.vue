@@ -1,19 +1,21 @@
 <template>
-  <div v-if="!isSupported">
-    <Alert :notSupportedAlert="true" />
+  <div :class="{ [`border border-base rounded-md p-8`]: !isSupported || gamepads.length === 0}">
+    <div v-if="!isSupported">
+      <Alert :notSupportedAlert="true" />
+    </div>
+    <div v-else-if="gamepads.length === 0">
+      <Alert :notSupportedAlert="false" />
+    </div>
+    <div v-else>
+      <KeyboardWithPhrases
+        v-for="gamepad in gamepads"
+        :key="gamepad.id"
+        :gamepad="gamepad"
+        :phrases="phrases"
+      />
+    </div>
+    <Infotable v-if="!isSupported || gamepads.length === 0" pangramPage/>
   </div>
-  <div v-else-if="gamepads.length === 0">
-    <Alert :notSupportedAlert="false" />
-  </div>
-  <div v-else>
-    <KeyboardWithPhrases
-      v-for="gamepad in gamepads"
-      :key="gamepad.id"
-      :gamepad="gamepad"
-      :phrases="phrases"
-    />
-  </div>
-  <Infotable v-if="!isSupported || gamepads.length === 0" />
 </template>
 
 <script setup lang="ts">
@@ -26,6 +28,3 @@ const { isSupported, gamepads } = useGamepad();
 const phrases = ref<string[]>([]);
 phrases.value.push("The quick brown fox jumps over the lazy dog.")
 </script>
-<style lang="scss" scoped>
-@import "@/assets/scss/alerts.scss";
-</style>
