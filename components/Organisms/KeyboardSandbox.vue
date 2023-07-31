@@ -4,7 +4,6 @@
     ref="inputField"
     @click="setCursor"
     class="w-full min-h-[4rem] p-2 border rounded-md border-base resize-none mb-4"  
-    autofocus
   />
   <div v-if="showHanaDS" class="w-full flex flex-col">
     <Keyboard 
@@ -46,6 +45,10 @@ const animate = reactive<{ [key: string]: boolean }>({
 const input = ref("");
 const inputArray = ref<string[]>([]);
 const inputField = ref<HTMLTextAreaElement | null>(null);
+
+onMounted(() => {
+  inputField.value?.focus();
+});
 
 // dummy input data
 const dummy = "Lorem ipsum dolor sit amet";

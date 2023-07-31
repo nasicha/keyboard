@@ -4,7 +4,7 @@ This repository contains the files for the [Hana DS](https://hana-ds.netlify.app
 
 ## Technology
 
-The prototype uses [Nuxt 3](https://nuxt.com/) and [Vue 3](https://vuejs.org/) as framework. It mainly uses VueUse's [useGamepad](https://vueuse.org/core/useGamepad/) to provide reactive bindings for the [Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API) in the browser.
+The prototype uses [Nuxt 3](https://nuxt.com/) and [Vue 3](https://vuejs.org/) as framework. It mainly uses VueUse's [useGamepad](https://vueuse.org/core/useGamepad/) to provide reactive bindings for the [Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API) in the browser. For fast styling tailwind[tailwind](https://tailwindcss.com/) is used in combination with [sass](https://sass-lang.com/).
 
 ## Nuxt 3 Setup
 
