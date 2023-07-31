@@ -22,6 +22,7 @@ module.exports = {
       'secondary': 'var(--secondary-color)',
       'background': 'var(--background-color)',
       'background-light': 'var(--background-light-color)',
+      'background-lighter': 'var(--background-lighter-color)',
       'icon': 'var(--icon-color)'
     },
     extend: {},

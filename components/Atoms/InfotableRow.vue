@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center p-4 gap-4 border-b-2 last:border-b-0">
+  <div class="flex items-center py-3 px-6 gap-8 border-b-2 last:border-b-0">
     <IconLS v-if="info.icon === 'ls'" class="w-8 h-8" />
     <IconRS v-if="info.icon === 'rs'" class="w-8 h-8" />
     <IconRT v-if="info.icon === 'rt'" class="w-8 h-8" />

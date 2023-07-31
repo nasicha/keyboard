@@ -2,7 +2,7 @@
   <div class="mt-8">
     <h2 class="">Hana DS Controls</h2>
     <div class="border-y-2 px-4">
-      <InfotableRow v-for="info in infos" :info="info" />
+      <InfotableRow v-for="info in infos" :info="info" class="odd:bg-background-lighter even:bg-background-light" />
     </div>
   </div>
 </template>
@@ -27,7 +27,7 @@ const infos = ref<Info[]>();
     },
 
     {
-        text: '1x Shift Character / 2x Capslock',
+        text: '1x Shift Character / 2x Caps Lock',
         icon: 'clickl'
     },
     {
