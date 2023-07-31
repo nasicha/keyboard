@@ -9,11 +9,11 @@
     </NuxtLink>
     <div class="nav-link nav-link-wrapper">
       <NuxtLink to="/pangram">Pangram</NuxtLink>
-      <NuxtLink to="/pangram_without_keyboard">w/o Hana DS</NuxtLink>
+      <NuxtLink to="/pangram/without_keyboard">w/o Hana DS</NuxtLink>
     </div>
     <div class="nav-link nav-link-wrapper">
       <NuxtLink to="/phrases">Phrases</NuxtLink>
-      <NuxtLink to="/phrases_without_keyboard">w/o Hana DS</NuxtLink>
+      <NuxtLink to="/phrases/without_keyboard">w/o Hana DS</NuxtLink>
     </div>
   </div>
 </template>
