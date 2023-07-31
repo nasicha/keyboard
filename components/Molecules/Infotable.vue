@@ -1,17 +1,18 @@
 <template>
-  <div class="mt-8">
-    <h2 class="">Hana DS Controls</h2>
-    <div class="border-y-2 px-4">
+  <div class="mt-6">
+    <h2 class="mb-2">Hana DS Controls</h2>
+    <div class="border-y-2 px-4 mb-2">
       <InfotableRow v-for="info in infos" :info="info" class="odd:bg-background-lighter even:bg-background-light" />
     </div>
   </div>
+  <Disclaimer />
 </template>
 <script setup lang="ts">
 import { Info } from "@/types/info"
 import InfotableRow from '@/components/Atoms/InfotableRow.vue';
+import Disclaimer from '@/components/Atoms/Disclaimer.vue';
 
 const props = defineProps<{
-  pangramPage?: boolean,
   phrasePage?: boolean
 }>();
 
@@ -50,17 +51,11 @@ const infos = ref<Info[]>();
       text: 'Toggle layout (Characters -> Symbols -> Emoji)',
       icon: 'lt'
     },
-
+    {
+      text: 'Hide/Show Keyboard (testing purpose)',
+      icon: 'dpad-down'
+    },
   ];
-
-  if(props.pangramPage || props.phrasePage) {
-    infos.value.push(
-      {
-        text: 'Hide/Show Keyboard (testing purpose)',
-        icon: 'dpad-down'
-      },
-    )
-  }
 
   if(props.phrasePage) {
     infos.value.push(

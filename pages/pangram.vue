@@ -14,7 +14,7 @@
         :phrases="phrases"
       />
     </div>
-    <Infotable v-if="!isSupported || gamepads.length === 0" pangramPage/>
+    <Infotable v-if="!isSupported || gamepads.length === 0" />
   </div>
 </template>
 
