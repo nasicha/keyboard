@@ -249,6 +249,7 @@ const cleanInput = () => {
   inputArrayIndex.value = 0;
   cursorIndex.value = 0;
   animatePhraseState.value = 0;
+  animateStart.value = false;
 }
 
 const submitPhrase = () => {
