@@ -6,8 +6,7 @@
     class="w-full min-h-[4rem] p-2 border rounded-md border-base resize-none mb-4"  
     autofocus
   />
-
-  <div class="w-full flex flex-col">
+  <div v-if="showHanaDS" class="w-full flex flex-col">
     <Keyboard 
       :gamepad="props.gamepad"
       :animate="animate"
@@ -15,10 +14,17 @@
       @inputCharacter="addCharacter"
       />
   </div>
+  <div v-else class="absolute bottom-0 right-0 m-8">
+    <div class="flex items-center p-2 border border-base rounded-full">
+      <DpadDown class="h-8 w-8 fill-base"/>
+      <span>Show Hana DS</span>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">  
 import Keyboard from "@/components/Molecules/Keyboard.vue";
+import DpadDown from "@/assets/icons/xbox_dpad_down.svg?component";
 import { timeIntervalHelper } from "@/types/timeIntervalHelper";
 import { mapGamepadToXbox360Controller } from "@vueuse/core";
 import { toRefs } from "vue";
@@ -206,6 +212,24 @@ watch(() => controller.value?.buttons.x.pressed, (pressed) => {
     animate.animateDelete = false;
     clearTimeout(deleteTimeID);
     clearInterval(deleteIntervalID);
+  }
+});
+
+/*
+* hide hana ds
+*/
+const showHanaDS = ref(true);
+
+onMounted(() => {
+  if (localStorage.getItem("showHanaDS")) {
+    showHanaDS.value = localStorage.getItem("showHanaDS") === "true";
+  }
+});
+
+watch(() => controller.value?.dpad.down.pressed, (pressed) => {
+  if(pressed) {
+    showHanaDS.value = !showHanaDS.value;
+    localStorage.setItem("showHanaDS", showHanaDS.value.toString());
   }
 });
 </script>
