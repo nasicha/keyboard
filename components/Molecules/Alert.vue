@@ -8,15 +8,6 @@
         <span class="opacity-80" v-html="alertText"
           ></span>
       </div>
-      <template #fallback>
-        <div class="h-14 alert-wrapper">
-          <div class="min-w-md w-14 h-14 bg-background rounded-md animate-pulse duration-75"></div>
-          <div class="flex flex-col px-4 py-1 w-full max-w-lg h-full">
-            <div class="h-6 w-1/2 bg-background rounded-md animate-pulse duration-75 mb-2"></div>
-            <div class="h-4 w-full bg-background rounded-md animate-pulse duration-75"></div>
-          </div>
-        </div>
-      </template>
     </client-only>
   </div>
 </template>
