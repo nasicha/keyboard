@@ -20,7 +20,6 @@
         @keyup.enter="submitPhrase"
         @click="setCursor"
         class="relative z-10 bg-transparent w-full p-2 border rounded-md border-base resize-none"  
-        autofocus
       />
       <div 
         class="absolute top-0 left-0 w-full h-full z-0 border rounded-md border-base opacity-60"
@@ -69,6 +68,10 @@ const animate = reactive<{ [key: string]: boolean }>({
 const input = ref("");
 const inputArray = ref<string[]>([]);
 const inputField = ref<HTMLTextAreaElement | null>(null);
+
+onMounted(() => {
+  inputField.value?.focus();
+});
 
 // dummy input data
 const dummy = "Lorem ipsum dolor sit amet";
