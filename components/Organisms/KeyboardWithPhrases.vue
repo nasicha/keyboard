@@ -19,7 +19,7 @@
         ref="inputField"
         @keyup.enter="submitPhrase"
         @click="setCursor"
-        class="relative z-10 bg-transparent w-full p-2 border rounded-md border-base resize-none"  
+        class="relative z-10 bg-transparent w-full p-2 border rounded-md border-base resize-none outline-none"  
       />
       <div 
         class="absolute top-0 left-0 w-full h-full z-0 border rounded-md border-base opacity-60"
