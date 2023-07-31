@@ -5,13 +5,21 @@
 @tailwind utilities;
 
 $active-control-color: #000;
-$active-secondary-color: #fff;
+$active-secondary-color: invert($active-control-color);
 $active-icon-color: lighten($active-control-color, 20%);;
 $active-background-color: lighten($active-control-color, 57%);
+$active-background-light-color: lighten($active-control-color, 80%);
 
 :root {
   --primary-color: #{$active-control-color};
   --secondary-color: #{$active-secondary-color};
   --background-color: #{$active-background-color};
+  --background-light-color: #{$active-background-light-color};
   --icon-color: #{$active-icon-color};
+
+  color: var(--primary-color);
+
+  h2 {
+    @apply text-2xl;
+  }
 }

@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col">
-  <div class="w-full h-auto px-2 pb-2 flex justify-between">
-    <span v-html="phrase" class="resize-none" disabled/>
-    <div v-if="props.phrases.length > 1" class="flex items-center gap-2">
-      <span class=" text-background">{{ phrasesIndex+1 }}/{{ props.phrases.length }}</span>
-      <IconStart class="h-6 w-6" />
+    <div class="w-full h-auto px-2 pb-2 flex justify-between">
+      <span v-html="phrase" class="resize-none" disabled/>
+      <div v-if="props.phrases.length > 1" class="flex items-center gap-2">
+        <span class="text-background">{{ phrasesIndex+1 }}/{{ props.phrases.length }}</span>
+        <IconStart class="h-6 w-6 rounded-full stroke-base stroke-[4]" :class="{ [`invert`]: animateStart }" />
     </div>
   </div>
     <input 
@@ -17,7 +17,7 @@
     />
   </div>
 
-  <div class="w-full flex flex-col">
+  <div v-if="showHanaDS" class="w-full flex flex-col" >
     <Keyboard 
       :gamepad="props.gamepad"
       :animate="animate"
@@ -25,16 +25,23 @@
       @inputCharacter="addCharacter"
       />
   </div>
+  <div v-else class="absolute bottom-0 right-0 m-8">
+    <div class="flex items-center p-2 border border-base rounded-full">
+      <DpadDown class="h-8 w-8 fill-base"/>
+      <span>Show Hana DS</span>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">  
 import Keyboard from "@/components/Molecules/Keyboard.vue";
 import IconStart from "@/assets/icons/xbox_button_start.svg?component";
+import DpadDown from "@/assets/icons/xbox_dpad_down.svg?component";
 import { timeIntervalHelper } from "@/types/timeIntervalHelper";
 import { mapGamepadToXbox360Controller } from "@vueuse/core";
 import { toRefs } from "vue";
 
-const props = defineProps<{ gamepad: Gamepad; phrases: string[]; showGamepad?: Boolean }>();
+const props = defineProps<{ gamepad: Gamepad; phrases: string[]; showGamepad?: boolean }>();
 
 // time & animation variables
 const multiDelay = 500;
@@ -217,6 +224,7 @@ watch(() => controller.value?.buttons.x.pressed, (pressed) => {
 * phrase logic
 */
 const phrasesIndex = ref(0);
+const animateStart = ref(false);
 
 const nextPhrase = () => {
   phrasesIndex.value = (phrasesIndex.value + 1) % props.phrases.length;
@@ -232,6 +240,7 @@ const cleanInput = () => {
 
 const submitPhrase = () => {
   if(props.phrases.length <= 1) return;
+  console.log(input.value === phrase.value);
 
   cleanInput();
   nextPhrase();
@@ -239,7 +248,21 @@ const submitPhrase = () => {
 
 watch(() => controller.value?.start.touched, (touched) => {
   if(touched) {
+    animateStart.value = true;
     submitPhrase();
+  } else {
+    animateStart.value = false;
+  }
+});
+
+/*
+* hide hana ds
+*/
+
+const showHanaDS = ref(true);
+watch(() => controller.value?.dpad.down.pressed, (pressed) => {
+  if(pressed) {
+    showHanaDS.value = !showHanaDS.value;
   }
 });
 </script>

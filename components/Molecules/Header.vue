@@ -8,7 +8,7 @@
       <span>Hana DS</span>
     </NuxtLink>
     <NuxtLink to="/pangram">Pangram</NuxtLink>
-    <NuxtLink to="/phrases">Phrasen</NuxtLink>
+    <NuxtLink to="/phrases">Phrases</NuxtLink>
     <NuxtLink to="/demo">Demo</NuxtLink>
   </div>
 </template>

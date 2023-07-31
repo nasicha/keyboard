@@ -1,19 +1,21 @@
 <template>
-  <div v-if="!isSupported">
-    <Alert :notSupportedAlert="true" />
+  <div :class="{ [`border border-base rounded-md p-8`]: !isSupported || gamepads.length === 0}">
+    <div v-if="!isSupported">
+      <Alert :notSupportedAlert="true" />
+    </div>
+    <div v-else-if="gamepads.length === 0">
+      <Alert :notSupportedAlert="false" />
+    </div>
+    <div v-else>
+      <KeyboardWithPhrases
+        v-for="gamepad in gamepads"
+        :key="gamepad.id"
+        :gamepad="gamepad"
+        :phrases="phrases"
+      />
+    </div>
+    <Infotable v-if="!isSupported || gamepads.length === 0" phrasePage />
   </div>
-  <div v-else-if="gamepads.length === 0">
-    <Alert :notSupportedAlert="false" />
-  </div>
-  <div v-else>
-    <KeyboardWithPhrases
-      v-for="gamepad in gamepads"
-      :key="gamepad.id"
-      :gamepad="gamepad"
-      :phrases="phrases"
-    />
-  </div>
-  <Infotable v-if="!isSupported || gamepads.length === 0" />
 </template>
 
 <script setup lang="ts">
@@ -28,6 +30,3 @@ const phrases = ref<string[]>([]);
 phrases.value = usePhrases();
 
 </script>
-<style lang="scss" scoped>
-@import "@/assets/scss/alerts.scss";
-</style>

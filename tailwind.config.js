@@ -21,6 +21,7 @@ module.exports = {
       'base': 'var(--primary-color)',
       'secondary': 'var(--secondary-color)',
       'background': 'var(--background-color)',
+      'background-light': 'var(--background-light-color)',
       'icon': 'var(--icon-color)'
     },
     extend: {},
