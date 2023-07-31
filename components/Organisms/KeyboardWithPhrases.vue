@@ -284,9 +284,17 @@ watch(() => controller.value?.start.touched, (touched) => {
 */
 
 const showHanaDS = ref(true);
+
+onMounted(() => {
+  if (localStorage.getItem("showHanaDS")) {
+    showHanaDS.value = localStorage.getItem("showHanaDS") === "true";
+  }
+});
+
 watch(() => controller.value?.dpad.down.pressed, (pressed) => {
   if(pressed) {
     showHanaDS.value = !showHanaDS.value;
+    localStorage.setItem("showHanaDS", showHanaDS.value.toString());
   }
 });
 </script>
