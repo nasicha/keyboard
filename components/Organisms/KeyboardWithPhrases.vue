@@ -1,20 +1,31 @@
 <template>
   <div class="flex flex-col">
     <div class="w-full h-auto px-2 pb-2 flex justify-between">
-      <span v-html="phrase" class="resize-none" disabled/>
-      <div v-if="props.phrases.length > 1" class="flex items-center gap-2">
+      <span
+        v-html="phrase" 
+        class="resize-none w-full"
+      />
+      <div 
+        v-if="props.phrases.length > 1" 
+        class="flex items-center gap-2"
+      >
         <span class="text-background">{{ phrasesIndex+1 }}/{{ props.phrases.length }}</span>
         <IconStart class="h-6 w-6 rounded-full stroke-base stroke-[4]" :class="{ [`invert`]: animateStart }" />
+      </div>
     </div>
-  </div>
-    <input 
-      v-model="input" 
-      ref="inputField"
-      @keyup.enter="submitPhrase"
-      @click="setCursor"
-      class="w-full p-2 border rounded-md border-base resize-none mb-4"  
-      autofocus
-    />
+    <div class="relative mb-4">
+      <div 
+        class="absolute top-0 left-0 w-full h-full z-0 border rounded-md border-base opacity-60"
+        :class="{ phrase__correct: animatePhraseState === 1, phrase__wrong: animatePhraseState === 2}" />
+      <input 
+        v-model="input" 
+        ref="inputField"
+        @keyup.enter="submitPhrase"
+        @click="setCursor"
+        class="w-full p-2 border rounded-md border-base resize-none z-10"  
+        autofocus
+      />
+    </div>
   </div>
 
   <div v-if="showHanaDS" class="w-full flex flex-col" >
@@ -225,6 +236,7 @@ watch(() => controller.value?.buttons.x.pressed, (pressed) => {
 */
 const phrasesIndex = ref(0);
 const animateStart = ref(false);
+const animatePhraseState = ref(0);
 
 const nextPhrase = () => {
   phrasesIndex.value = (phrasesIndex.value + 1) % props.phrases.length;
@@ -236,14 +248,25 @@ const cleanInput = () => {
   inputArray.value = [];
   inputArrayIndex.value = 0;
   cursorIndex.value = 0;
+  animatePhraseState.value = 0;
 }
 
 const submitPhrase = () => {
   if(props.phrases.length <= 1) return;
-  console.log(input.value === phrase.value);
-
-  cleanInput();
-  nextPhrase();
+  
+  if(input.value === phrase.value) {
+    animatePhraseState.value = 1;
+    setTimeout(() => {
+      animatePhraseState.value = 0;
+      cleanInput();
+      nextPhrase();
+    }, 1000);
+  } else {
+    animatePhraseState.value = 2;
+    setTimeout(() => {
+      animatePhraseState.value = 0;
+    }, 1000);
+  }
 }
 
 watch(() => controller.value?.start.touched, (touched) => {
@@ -266,3 +289,16 @@ watch(() => controller.value?.dpad.down.pressed, (pressed) => {
   }
 });
 </script>
+<style lang="scss" scoped>
+.phrase {
+  &__correct, &__wrong {
+    @apply animate-[pulse_750ms_ease-in-out_infinite];
+  }
+  &__correct {
+    @apply bg-phrase-correct;
+  }
+  &__wrong {
+    @apply bg-phrase-wrong;
+  }
+}
+</style>

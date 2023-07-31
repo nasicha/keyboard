@@ -23,6 +23,8 @@ module.exports = {
       'background': 'var(--background-color)',
       'background-light': 'var(--background-light-color)',
       'background-lighter': 'var(--background-lighter-color)',
+      'phrase-correct': 'var(--background-phrase-correct)',
+      'phrase-wrong': 'var(--background-phrase-wrong)',
       'icon': 'var(--icon-color)'
     },
     extend: {},
