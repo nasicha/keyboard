@@ -3,7 +3,7 @@
     v-model="input" 
     ref="inputField"
     @click="setCursor"
-    class="w-full min-h-[4rem] p-2 border rounded-md border-base resize-none mb-4"  
+    class="w-full min-h-[4rem] p-2 border rounded-md border-base resize-none outline-none mb-4"  
   />
   <div v-if="showHanaDS" class="w-full flex flex-col">
     <Keyboard 
