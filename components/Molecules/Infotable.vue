@@ -47,7 +47,7 @@ const infos = ref<Info[]>();
       icon: 'rb'
     },
     {
-      text: 'Toggle layout (abc/123/Emoji)',
+      text: 'Toggle layout (Characters -> Symbols -> Emoji)',
       icon: 'lt'
     },
 
