@@ -3,7 +3,7 @@
     <div class="w-full h-auto px-2 pb-2 flex justify-between">
       <span
         v-html="phrase" 
-        class="resize-none w-full"
+        class="phrase-output resize-none w-full"
       />
       <div 
         v-if="props.phrases.length > 1" 
