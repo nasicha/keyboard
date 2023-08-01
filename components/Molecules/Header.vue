@@ -15,6 +15,10 @@
       <NuxtLink to="/phrases">Phrases</NuxtLink>
       <NuxtLink to="/phrases/without_keyboard">w/o Hana DS</NuxtLink>
     </div>
+    <div class="nav-link nav-link-wrapper">
+      <NuxtLink to="/sandbox">Sandbox</NuxtLink>
+      <NuxtLink to="/sandbox/without_keyboard">w/o Hana DS</NuxtLink>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
