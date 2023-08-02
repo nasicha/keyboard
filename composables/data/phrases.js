@@ -1,9 +1,9 @@
 export default {
 	phrases: [
-    "test",
-		"video camera with a zoom lens",
-    "have a good weekend",
+		"great disturbance in the force",
+    "a steep learning curve in riding a unicycle",
+    "Canada has ten provinces",
     "what a monkey sees a monkey will do",
-    "Hana DS is really awesome ❤️🌸💯",
+    "Hana DS is really awesome! ❤️🌸💯",
 	]
 };
