@@ -5,7 +5,7 @@
   to provide reactive bindings for the 
   <a class="underline hover:text-base hover:text-xs" href="https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API" target="_blank">Gamepad API</a>.
   Currently (July, 2023) there are only bindings for the Xbox 360 Controller available. The layout is designed to be used with such a gamepad and tested with a Xbox Series Controller.
-  Code is open source and available on <a class="underline hover:text-base hover:text-xs" href="https://github.com/nasicha/keyboard" target="_blank">github</a>.
+  Code is available on <a class="underline hover:text-base hover:text-xs" href="https://github.com/nasicha/keyboard" target="_blank">github</a>.
   </p>
 </template>
 <script setup lang="ts">
