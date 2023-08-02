@@ -1,4 +1,8 @@
-// $base-color: rgb(236 72 153);
-$base-color: theme('colors.base');
-$secondary-color: theme('colors.secondary');
-$background-color: theme('colors.background');
+$active-control-color: #000;
+$active-secondary-color: invert($active-control-color);
+$active-icon-color: lighten($active-control-color, 20%);;
+$active-background-color: lighten($active-control-color, 57%);
+$active-background-light-color: lighten($active-control-color, 85%);
+$active-background-lighter-color: lighten($active-control-color, 95%);
+$active-background-phrase-correct-color: hsl(117, 60%, 50%);
+$active-background-phrase-wrong-color: hsl(357, 60%, 50%);
