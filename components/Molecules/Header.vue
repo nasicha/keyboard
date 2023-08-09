@@ -35,10 +35,10 @@ import HanaDSLogo from "@/assets/icons/hana_ds-logo-bg.svg?component";
     }
 
     &-wrapper {
-      @apply flex h-full overflow-hidden;
+      @apply flex flex-col md:flex-row h-full overflow-hidden;
 
       & > a {
-        @apply first:border-r px-4 py-2;
+        @apply first:border-b md:first:border-r md:first:border-b-0 px-2 xs:px-4 py-2;
         &.router-link-active {
           @apply bg-secondary text-base border-base;
         }
