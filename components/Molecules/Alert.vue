@@ -1,7 +1,8 @@
 <template>
   <div class="alert-wrapper">
     <ClientOnly>
-      <span class="text-5xl opacity-50">{{ alertEmoji }}</span>
+      <StopSign v-if="notSupportedEmoji" />
+      <NoController v-if="!notSupportedEmoji"/>
       <div class="flex flex-col px-4">
         <span class="text-2xl">{{ alertInfo }}</span>
         <span class="opacity-80" v-html="alertText"></span>
@@ -17,20 +18,29 @@
   </div>
 </template>
 <script setup lang="ts">
-const props = defineProps<{ notSupportedAlert: boolean }>();
+import StopSign from "@/assets/icons/stop-sign.svg?component";
+import NoController from "@/assets/icons/no-controller.svg?component";
+const props = defineProps<{ notSupportedAlert?: boolean }>();
 
-const alertEmoji = ref("");
+const notSupportedEmoji = ref(false);
 const alertInfo = ref("");
 const alertText = ref("");
 const showSkeleton = ref(true);
 
 onMounted(() => {
   showSkeleton.value = false;
-  alertEmoji.value = props.notSupportedAlert ? "🚫" : "🎮";
+  notSupportedEmoji.value = props.notSupportedAlert;
   alertInfo.value = props.notSupportedAlert ? "Gamepad is not supported on this device." : "No Gamepad Detected";
   alertText.value = props.notSupportedAlert ? "It seems your device does not support the Gamepad API. Check <a href='https://caniuse.com/gamepad'>here</a> for a list supported devices." : "Ensure your gamepad is connected and press a button to wake it up.";
 });
 </script>
 <style lang="scss" scoped>
-@import "@/assets/scss/alerts.scss";
+
+.alert-wrapper {
+  @apply w-full flex flex-row justify-center items-center gap-2 md:gap-6;
+
+  & > svg {
+    @apply w-14 h-14 min-w-[3rem];
+  }
+}
 </style>

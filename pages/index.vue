@@ -1,10 +1,10 @@
 <template>
   <div :class="{ [`border border-base rounded-md p-8`]: !isSupported || gamepads.length === 0}">
     <div v-if="!isSupported">
-      <Alert :notSupportedAlert="true" />
+      <Alert notSupportedAlert />
     </div>
     <div v-else-if="gamepads.length === 0">
-      <Alert :notSupportedAlert="false" />
+      <Alert />
     </div>
     <div v-else>
       <KeyboardSandbox
