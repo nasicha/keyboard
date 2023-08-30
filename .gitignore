@@ -2,3 +2,7 @@
 .nuxt
 .output
 node_modules
+
+# Dotfiles
+
+.*
