@@ -124,7 +124,8 @@ const characterGroupPosition = (x: number, y: number) => {
 
 watch(() => controller.value?.stick.left,
   (left) => {
-    if(stickLeft.x === left?.horizontal || stickLeft.y === left?.vertical) return;
+    if(left?.horizontal !== 1 && (stickLeft.x === left?.horizontal || stickLeft.y === left?.vertical)) return;
+    
 
     stickLeft.x = left?.horizontal ? left?.horizontal : 0;
     stickLeft.y = left?.vertical ? left?.vertical : 0;
