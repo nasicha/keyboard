@@ -117,6 +117,7 @@ watch(
  */
 const stickLeft = reactive<{ x: number; y: number }>({ x: 0, y: 0 });
 const charGroup = ref(0);
+const inputCharacter = ref(0);
 
 const characterGroupPosition = (x: number, y: number) => {
   charGroup.value = useLeftStick(x, y);
@@ -124,8 +125,8 @@ const characterGroupPosition = (x: number, y: number) => {
 
 watch(() => controller.value?.stick.left,
   (left) => {
+    if(inputCharacter.value !== 0) return;
     if(!(left?.horizontal === -1 || left?.horizontal === 1) && (stickLeft.x === left?.horizontal || stickLeft.y === left?.vertical)) return;
-
 
     stickLeft.x = left?.horizontal ? left?.horizontal : 0;
     stickLeft.y = left?.vertical ? left?.vertical : 0;
@@ -137,7 +138,6 @@ watch(() => controller.value?.stick.left,
  * right stick logic
  */
 const stickRight = reactive<{ x: number; y: number }>({ x: 0, y: 0 });
-const inputCharacter = ref(0);
 const animateCharacterPosition = ref(0);
 const activeCharGroup = ref(0);
 
